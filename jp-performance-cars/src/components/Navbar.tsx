@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   AppBar,
-  Toolbar,
   Typography,
   Button,
   Box,
@@ -13,6 +12,26 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import PhoneIcon from "@mui/icons-material/Phone";
+import { motion } from "framer-motion";
+
+const MotionIcon = motion.div;
+
+const iconHoverVariants = {
+  initial: {
+    scale: 1,
+    y: 0,
+    color: "#ffffff",
+  },
+  hover: {
+    scale: 1.1,
+    y: -2,
+    color: "#e0e0e0",
+    transition: {
+      duration: 0.2,
+      ease: "easeOut",
+    },
+  },
+};
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,7 +62,7 @@ const Navbar: React.FC = () => {
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            padding: isScrolled ? "0 24px" : "10px 24px",
+            padding: isScrolled ? "0 24px" : "10px 2px",
           }}
         >
           {/* Top Row */}
@@ -52,15 +71,38 @@ const Navbar: React.FC = () => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              mb: 6,
+              mb: isScrolled ? -4 : 6,
+              height: isScrolled ? "60px" : "auto",
+              opacity: isScrolled ? 0 : 1,
+              transition: "all 0.3s ease-in-out",
             }}
           >
             {/* Social Icons */}
             <Stack direction="row" spacing={2}>
-              <InstagramIcon sx={{ cursor: "pointer" }} />
-              <FacebookIcon sx={{ cursor: "pointer" }} />
-              <YouTubeIcon sx={{ cursor: "pointer" }} />
-              <TwitterIcon sx={{ cursor: "pointer" }} />
+              {["instagram", "facebook", "youtube", "twitter"].map(
+                (platform) => (
+                  <MotionIcon
+                    key={platform}
+                    variants={iconHoverVariants}
+                    initial="initial"
+                    whileHover="hover"
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {platform === "instagram" && (
+                      <InstagramIcon sx={{ cursor: "pointer" }} />
+                    )}
+                    {platform === "facebook" && (
+                      <FacebookIcon sx={{ cursor: "pointer" }} />
+                    )}
+                    {platform === "youtube" && (
+                      <YouTubeIcon sx={{ cursor: "pointer" }} />
+                    )}
+                    {platform === "twitter" && (
+                      <TwitterIcon sx={{ cursor: "pointer" }} />
+                    )}
+                  </MotionIcon>
+                )
+              )}
             </Stack>
 
             {/* Logo */}
@@ -69,13 +111,14 @@ const Navbar: React.FC = () => {
               component="div"
               sx={{
                 fontSize: isScrolled ? "1.8rem" : "2.2rem",
+                fontFamily: "'Times New Roman', sans-serif",
+                fontWeight: "400",
                 transition: "all 0.3s ease-in-out",
-                fontWeight: "bold",
                 letterSpacing: "2px",
                 textAlign: "center",
               }}
             >
-              Jp
+              JPPERFORMANCECARS
             </Typography>
 
             {/* Phone Number */}
@@ -98,7 +141,7 @@ const Navbar: React.FC = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              gap: "20px",
+              gap: "35px",
               mt: "auto",
               paddingBottom: "15px",
               "& .MuiButton-root": {
@@ -118,7 +161,7 @@ const Navbar: React.FC = () => {
       </Container>
 
       {/* Colored lines at bottom */}
-      <Box sx={{ display: "flex", height: "6px", gap: "30px", px: "30px" }}>
+      <Box sx={{ display: "flex", height: "6px", gap: "30px", px: "20px" }}>
         <Box sx={{ flex: 1, backgroundColor: "#006620" }} />
         <Box sx={{ flex: 1, backgroundColor: "#e8e8e8" }} />
         <Box sx={{ flex: 1, backgroundColor: "#a70a0c" }} />
