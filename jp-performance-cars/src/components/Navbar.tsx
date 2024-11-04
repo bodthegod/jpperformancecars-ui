@@ -81,7 +81,15 @@ const Navbar: React.FC = () => {
             {/* Phone Number */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <PhoneIcon />
-              <Typography>+44 (0)1234 567890</Typography>
+              <Typography
+                sx={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontWeight: 700,
+                  letterSpacing: "0.5px",
+                }}
+              >
+                +44 (0)1543 682388
+              </Typography>
             </Box>
           </Box>
 
@@ -91,7 +99,12 @@ const Navbar: React.FC = () => {
               display: "flex",
               justifyContent: "center",
               gap: "20px",
-              mt: "15px",
+              mt: "auto",
+              paddingBottom: "15px",
+              "& .MuiButton-root": {
+                fontWeight: 700,
+                fontFamily: "'Montserrat', sans-serif",
+              },
             }}
           >
             <Button color="inherit">HOME</Button>
