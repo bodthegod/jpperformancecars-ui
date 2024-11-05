@@ -8,7 +8,7 @@ const BackToTopButton = styled("div")(({ theme }) => ({
   right: 40,
   width: 40,
   height: 40,
-  backgroundColor: "black",
+  backgroundColor: "rgba(0, 0, 0, 0.3)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

@@ -31,7 +31,6 @@ const ContentOverlay = styled(Box)`
   text-align: center;
   padding: 20px;
   background: rgba(0, 0, 0, 0.4); // Optional: adds a slight dark overlay
-  border-radius: 8px;
 `;
 
 const HeroText = styled(Typography)`
@@ -61,23 +60,14 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8 }}
         >
           <HeroText
-            variant="h2"
-            sx={{
-              fontWeight: 700,
-              marginBottom: 2,
-              fontSize: { xs: "2rem", md: "3.5rem" },
-            }}
-          >
-            Welcome to JPPerformanceCars
-          </HeroText>
-          <HeroText
             variant="h5"
             sx={{
               fontWeight: 500,
               fontSize: { xs: "1.2rem", md: "1.5rem" },
             }}
           >
-            Specializing in Ferraris, Lamborghinis, and Maseratis
+            Specialist supercar servicing and maintenance in the heart of the
+            Midlands.
           </HeroText>
         </motion.div>
       </ContentOverlay>
