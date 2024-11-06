@@ -7,7 +7,6 @@ const HeroContainer = styled(Box)`
   position: relative;
   height: 100vh;
   width: 100%;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;

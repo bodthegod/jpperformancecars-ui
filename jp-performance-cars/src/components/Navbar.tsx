@@ -10,6 +10,8 @@ import {
   Drawer,
   Theme,
   useMediaQuery,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -18,6 +20,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import PhoneIcon from "@mui/icons-material/Phone";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { motion } from "framer-motion";
 
 const MotionIcon = motion.div;
@@ -95,6 +98,39 @@ export const socialLinks: SocialLink[] = [
   },
 ];
 
+// Add navigation items with their dropdown options
+const navItems = [
+  {
+    label: "HOME",
+    dropdownItems: [], // No dropdown for home
+  },
+  {
+    label: "SHOWROOM",
+    dropdownItems: ["New Arrivals", "Current Stock", "Sold Gallery"],
+  },
+  {
+    label: "SELL YOUR CAR",
+    dropdownItems: ["Valuation", "Part Exchange", "Consignment"],
+  },
+  {
+    label: "SERVICES",
+    dropdownItems: [
+      "Supercar Service",
+      "Detailing",
+      "Paint Protection",
+      "Storage",
+    ],
+  },
+  {
+    label: "ABOUT",
+    dropdownItems: ["Our Story", "Team", "Facilities"],
+  },
+  {
+    label: "CONTACT",
+    dropdownItems: [], // No dropdown for contact
+  },
+];
+
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -102,9 +138,26 @@ const Navbar: React.FC = () => {
     theme.breakpoints.down("md")
   );
 
+  // Add state for managing dropdown menus
+  const [anchorEl, setAnchorEl] = useState<{
+    [key: string]: HTMLElement | null;
+  }>({});
+
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    label: string
+  ) => {
+    setAnchorEl({ ...anchorEl, [label]: event.currentTarget });
+  };
+
+  const handleClose = (label: string) => {
+    setAnchorEl({ ...anchorEl, [label]: null });
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      setAnchorEl({});
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -219,12 +272,66 @@ const Navbar: React.FC = () => {
                 },
               }}
             >
-              <Button color="inherit">HOME</Button>
-              <Button color="inherit">SHOWROOM</Button>
-              <Button color="inherit">SELL YOUR CAR</Button>
-              <Button color="inherit">SERVICES</Button>
-              <Button color="inherit">ABOUT</Button>
-              <Button color="inherit">CONTACT</Button>
+              {navItems.map((item) => (
+                <Box key={item.label}>
+                  <Button
+                    color="inherit"
+                    endIcon={
+                      item.dropdownItems.length > 0 && <KeyboardArrowDownIcon />
+                    }
+                    onClick={(e) => handleClick(e, item.label)}
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                      },
+                    }}
+                  >
+                    {item.label}
+                  </Button>
+                  {item.dropdownItems.length > 0 && (
+                    <Menu
+                      disableScrollLock={true}
+                      anchorEl={anchorEl[item.label]}
+                      open={Boolean(anchorEl[item.label])}
+                      onClose={() => handleClose(item.label)}
+                      PaperProps={{
+                        sx: {
+                          backgroundColor: "black",
+                          color: "white",
+                          mt: 1,
+                          minWidth: 180,
+                          "& .MuiMenuItem-root": {
+                            fontFamily: "'Montserrat', sans-serif",
+                            fontSize: "0.9rem",
+                            letterSpacing: "1px",
+                            py: 1.5,
+                            "&:hover": {
+                              backgroundColor: "rgba(255, 255, 255, 0.1)",
+                            },
+                          },
+                        },
+                      }}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center",
+                      }}
+                    >
+                      {item.dropdownItems.map((dropdownItem) => (
+                        <MenuItem
+                          key={dropdownItem}
+                          onClick={() => handleClose(item.label)}
+                        >
+                          {dropdownItem}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  )}
+                </Box>
+              ))}
             </Box>
           )}
         </Box>
@@ -254,6 +361,7 @@ const Navbar: React.FC = () => {
                 backgroundColor: "black",
                 opacity: 0.95,
                 color: "white",
+                textAlign: "center",
                 padding: "20px",
               },
             }}
@@ -277,22 +385,82 @@ const Navbar: React.FC = () => {
                 display: "flex",
                 flexDirection: "column",
                 gap: 2,
+                width: "100%",
               }}
             >
-              {["HOME", "SERVICES", "ABOUT", "CONTACT"].map((item) => (
-                <Button
-                  key={item}
-                  color="inherit"
-                  sx={{
-                    fontWeight: 700,
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: "1.2rem",
-                    py: 2,
-                  }}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item}
-                </Button>
+              {navItems.map((item) => (
+                <Box key={item.label} sx={{ width: "100%" }}>
+                  <Button
+                    color="inherit"
+                    sx={{
+                      fontWeight: 700,
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontSize: "1.2rem",
+                      py: 2,
+                      width: "100%",
+                      textAlign: "center",
+                    }}
+                    endIcon={
+                      item.dropdownItems.length > 0 && <KeyboardArrowDownIcon />
+                    }
+                    onClick={(e) => handleClick(e, item.label)}
+                  >
+                    {item.label}
+                  </Button>
+                  {item.dropdownItems.length > 0 && (
+                    <Menu
+                      anchorEl={anchorEl[item.label]}
+                      open={Boolean(anchorEl[item.label])}
+                      onClose={() => handleClose(item.label)}
+                      PaperProps={{
+                        sx: {
+                          backgroundColor: "black",
+                          color: "white",
+                          left: "0 !important",
+                          right: "0 !important",
+                          width: "100%",
+                          maxWidth: "none",
+                          "& .MuiList-root": {
+                            padding: 0,
+                          },
+                          "& .MuiMenuItem-root": {
+                            fontFamily: "'Montserrat', sans-serif",
+                            fontSize: "1.1rem",
+                            textAlign: "center",
+                            justifyContent: "center",
+                            py: 2,
+                            width: "100%",
+                          },
+                        },
+                      }}
+                      MenuListProps={{
+                        sx: {
+                          width: "100%",
+                        },
+                      }}
+                      sx={{
+                        "& .MuiMenu-paper": {
+                          width: "100%",
+                          maxWidth: "100%",
+                          left: "0 !important",
+                          right: "0 !important",
+                        },
+                      }}
+                    >
+                      {item.dropdownItems.map((dropdownItem) => (
+                        <MenuItem
+                          key={dropdownItem}
+                          onClick={() => {
+                            handleClose(item.label);
+                            setMobileMenuOpen(false);
+                          }}
+                        >
+                          {dropdownItem}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  )}
+                </Box>
               ))}
             </MotionBox>
           </Drawer>
