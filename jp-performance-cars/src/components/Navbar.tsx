@@ -22,6 +22,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const MotionIcon = motion.div;
 const MotionStack = motion(Stack as any);
@@ -102,7 +103,8 @@ export const socialLinks: SocialLink[] = [
 const navItems = [
   {
     label: "HOME",
-    dropdownItems: [], // No dropdown for home
+    dropdownItems: [],
+    link: "/",
   },
   {
     label: "SHOWROOM",
@@ -128,15 +130,27 @@ const navItems = [
   {
     label: "CONTACT",
     dropdownItems: [], // No dropdown for contact
+    link: "/contact",
   },
 ];
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
+
+  const handleNavigation = (item: (typeof navItems)[0]) => {
+    if (item.link) {
+      navigate(item.link);
+      // Close mobile menu if open
+      setMobileMenuOpen(false);
+      // Close any open dropdowns
+      handleClose(item.label);
+    }
+  };
 
   // Add state for managing dropdown menus
   const [anchorEl, setAnchorEl] = useState<{
@@ -279,7 +293,13 @@ const Navbar: React.FC = () => {
                     endIcon={
                       item.dropdownItems.length > 0 && <KeyboardArrowDownIcon />
                     }
-                    onClick={(e) => handleClick(e, item.label)}
+                    onClick={(e) => {
+                      if (item.dropdownItems.length > 0) {
+                        handleClick(e, item.label);
+                      } else {
+                        handleNavigation(item);
+                      }
+                    }}
                     sx={{
                       "&:hover": {
                         backgroundColor: "rgba(255, 255, 255, 0.05)",
@@ -403,7 +423,13 @@ const Navbar: React.FC = () => {
                     endIcon={
                       item.dropdownItems.length > 0 && <KeyboardArrowDownIcon />
                     }
-                    onClick={(e) => handleClick(e, item.label)}
+                    onClick={(e) => {
+                      if (item.dropdownItems.length > 0) {
+                        handleClick(e, item.label);
+                      } else {
+                        handleNavigation(item);
+                      }
+                    }}
                   >
                     {item.label}
                   </Button>
