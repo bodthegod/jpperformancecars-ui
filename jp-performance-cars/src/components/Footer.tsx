@@ -2,6 +2,7 @@ import { Box, Container, Grid, Typography, Stack, styled } from "@mui/material";
 import { Instagram, Facebook, YouTube, Twitter } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { iconHoverVariants } from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 const MotionIcon = motion.div;
 const FooterHeading = styled(Typography)({
@@ -27,14 +28,30 @@ const FooterSection = styled(Box)({
 });
 
 const FooterText = styled(Typography)({
-  fontFamily: "Montserrat, sans-serif",
-  color: "rgb(255, 255, 255)",
-  letterSpacing: "0.5px",
-  fontSize: "13px",
-  padding: "2px 0",
+  "& span": {
+    cursor: "pointer",
+    position: "relative",
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      width: "100%",
+      height: "1px",
+      bottom: -2,
+      left: 0,
+      backgroundColor: "#ffffff",
+      transform: "scaleX(0)",
+      transformOrigin: "bottom right",
+      transition: "transform 0.3s ease",
+    },
+    "&:hover::after": {
+      transform: "scaleX(1)",
+      transformOrigin: "bottom left",
+    },
+  },
 });
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <Box sx={{ bgcolor: "black", color: "white", py: 4 }}>
       <Container maxWidth="lg">
@@ -122,8 +139,12 @@ const Footer = () => {
                 />
               </Box>
               <Stack spacing={1}>
-                <FooterText variant="body2">How To Find Us</FooterText>
-                <FooterText variant="body2">T +44 (0)1543 682388</FooterText>
+                <FooterText variant="body2">
+                  <span onClick={() => navigate("/contact")}>
+                    How To Find Us
+                  </span>
+                </FooterText>
+                <FooterText variant="body2">T +44 (0)7391 710867</FooterText>
                 <FooterText variant="body2">
                   E sales@jpperformancecars.com
                 </FooterText>

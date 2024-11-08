@@ -14,6 +14,7 @@ import { ContactFormData } from "../types/types";
 import { ColorBars } from "./elements/ColorBars";
 import contactImage from "../assets/images/JP1.jpg";
 import { easeInOut, motion } from "framer-motion";
+import { SubmitButton } from "./ServiceForm";
 
 const ContactPage: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -182,20 +183,9 @@ const ContactPage: React.FC = () => {
                 multiline
                 rows={6}
               />
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  mt: 2,
-                  bgcolor: "black",
-                  color: "white",
-                  "&:hover": {
-                    bgcolor: "#333",
-                  },
-                }}
-              >
+              <SubmitButton type="submit" variant="contained">
                 SEND
-              </Button>
+              </SubmitButton>
             </Box>
           </Grid>
 
@@ -235,7 +225,7 @@ const ContactPage: React.FC = () => {
 
               <InfoSection>
                 <InfoSectionHeader variant="h6">Phone</InfoSectionHeader>
-                <Typography>+44</Typography>
+                <Typography fontWeight={700}>+44 (0)7391 710867</Typography>
               </InfoSection>
 
               <InfoSection>
@@ -320,7 +310,7 @@ const ContactPage: React.FC = () => {
                 }}
               >
                 <Typography>JP Performance Cars Ltd.</Typography>
-                <Typography>Unit 2</Typography>
+                <Typography>Unit 10</Typography>
                 <Typography>Metal Products Business Park</Typography>
                 <Typography>Prospect Road</Typography>
                 <Typography>Burntwood</Typography>
@@ -360,8 +350,8 @@ const HoursRow = styled(Box)({
 });
 
 const InfoSectionHeader = styled(Typography)({
-  letterSpacing: "1px",
-  fontSize: "1rem",
+  letterSpacing: "1.5px",
+  fontSize: "1.1rem",
   lineHeight: "1.5",
   fontWeight: "700",
   margin: "0 0 15px 0",

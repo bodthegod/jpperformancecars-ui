@@ -69,7 +69,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const SubmitButton = styled(Button)(({ theme }) => ({
+export const SubmitButton = styled(Button)(({ theme }) => ({
   background: "#000",
   color: "#fff",
   padding: "12px 40px",

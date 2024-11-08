@@ -266,7 +266,7 @@ const Navbar: React.FC = () => {
                     letterSpacing: "0.5px",
                   }}
                 >
-                  +44 (0)1543 682388
+                  +44 (0)7391 710867
                 </Typography>
               </MotionBox>
             )}
