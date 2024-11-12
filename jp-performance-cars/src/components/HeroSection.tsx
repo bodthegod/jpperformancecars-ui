@@ -1,8 +1,7 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
-
+import heroVideo from "../assets/videos/HeroVideo.mp4";
 const HeroContainer = styled(Box)`
   position: relative;
   height: 100vh;
@@ -10,6 +9,10 @@ const HeroContainer = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 500px;
+  }
 `;
 
 const VideoBackground = styled.video`
@@ -22,20 +25,13 @@ const VideoBackground = styled.video`
   height: auto;
   z-index: -1;
   object-fit: cover;
-`;
-
-const ContentOverlay = styled(Box)`
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.4); // Optional: adds a slight dark overlay
-`;
-
-const HeroText = styled(Typography)`
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  font-family: "Montserrat", sans-serif;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 500px;
+    top: 0;
+    min-height: 0%;
+    object-fit: cover;
+  }
 `;
 
 const HeroSection: React.FC = () => {
@@ -46,30 +42,11 @@ const HeroSection: React.FC = () => {
         muted
         loop
         playsInline
-        poster="/path-to-fallback-image.jpg" // Optional: fallback image while video loads
+        poster="../assets/images/JP1.jpg"
       >
-        <source src="/path-to-your-video.mp4" type="video/mp4" />
+        <source src={heroVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </VideoBackground>
-
-      <ContentOverlay>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <HeroText
-            variant="h5"
-            sx={{
-              fontWeight: 500,
-              fontSize: { xs: "1.2rem", md: "1.5rem" },
-            }}
-          >
-            Specialist supercar servicing and maintenance in the heart of the
-            Midlands.
-          </HeroText>
-        </motion.div>
-      </ContentOverlay>
     </HeroContainer>
   );
 };
