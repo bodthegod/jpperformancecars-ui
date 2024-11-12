@@ -25,8 +25,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 const MotionIcon = motion.div;
-const MotionStack = motion(Stack as any);
-const MotionBox = motion(Box as any);
+const MotionStack = motion.create(Stack as any);
+const MotionBox = motion.create(Box as any);
 
 const topElementsVariants = {
   initial: {
@@ -111,10 +111,6 @@ const navItems = [
     dropdownItems: ["New Arrivals", "Current Stock", "Sold Gallery"],
   },
   {
-    label: "SELL YOUR CAR",
-    dropdownItems: ["Valuation", "Part Exchange", "Consignment"],
-  },
-  {
     label: "SERVICES",
     dropdownItems: [
       "Supercar Service",
@@ -139,7 +135,7 @@ const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("md")
+    theme.breakpoints.down("lg")
   );
 
   const handleNavigation = (item: (typeof navItems)[0]) => {
@@ -258,12 +254,21 @@ const Navbar: React.FC = () => {
                 animate={isScrolled ? "scrolled" : "initial"}
                 variants={topElementsVariants}
               >
-                <PhoneIcon />
+                <PhoneIcon
+                  sx={{
+                    "@media (max-width: 1024px)": {
+                      fontSize: "1rem",
+                    },
+                  }}
+                />
                 <Typography
                   sx={{
                     fontFamily: "'Montserrat', sans-serif",
                     fontWeight: 700,
                     letterSpacing: "0.5px",
+                    "@media (max-width: 1024px)": {
+                      fontSize: "0.7rem",
+                    },
                   }}
                 >
                   +44 (0)7391 710867

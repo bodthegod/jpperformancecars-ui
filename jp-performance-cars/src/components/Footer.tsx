@@ -237,21 +237,21 @@ const Footer = () => {
           <Grid container spacing={2} justifyContent="space-between">
             <Grid item>
               <Stack direction="row" spacing={2}>
-                <Typography variant="body2" color="gray">
+                <FooterText variant="body2" color="gray">
                   Terms & Conditions
-                </Typography>
+                </FooterText>
                 <Typography variant="body2" color="gray">
                   |
                 </Typography>
-                <Typography variant="body2" color="gray">
+                <FooterText variant="body2" color="gray">
                   Privacy Policy
-                </Typography>
+                </FooterText>
                 <Typography variant="body2" color="gray">
                   |
                 </Typography>
-                <Typography variant="body2" color="gray">
-                  Contact Us
-                </Typography>
+                <FooterText variant="body2" color="gray">
+                  <span onClick={() => navigate("/contact")}>Contact Us</span>
+                </FooterText>
                 <Typography variant="body2" color="gray">
                   |
                 </Typography>
