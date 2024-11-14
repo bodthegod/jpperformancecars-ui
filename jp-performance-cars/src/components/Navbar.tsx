@@ -23,6 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import jpLogo from "../assets/images/JPLogo.png";
 
 const MotionIcon = motion.div;
 const MotionStack = motion.create(Stack as any);
@@ -176,7 +177,7 @@ const Navbar: React.FC = () => {
       sx={{
         backgroundColor: "black",
         transition: "all 0.3s ease-in-out",
-        height: isMobile ? "90px" : isScrolled ? "90px" : "175px",
+        height: isMobile ? "90px" : isScrolled ? "90px" : "205px",
         boxShadow: "none",
         borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
       }}
@@ -223,22 +224,20 @@ const Navbar: React.FC = () => {
               </MotionStack>
             )}
 
-            <Typography
-              variant="h4"
-              component="div"
+            <Box
+              component="img"
+              src={jpLogo}
+              onClick={() => navigate("/")}
+              alt="JP Performance Cars"
               sx={{
-                fontSize: isScrolled || isMobile ? "1.3rem" : "2.2rem",
-                fontFamily: "'Times New Roman', sans-serif",
-                fontWeight: "400",
+                height: isScrolled || isMobile ? "55px" : "70px",
+                width: "auto",
                 transition: "all 0.3s ease-in-out",
-                letterSpacing: "2px",
-                textAlign: "center",
                 opacity: isMobile ? 1 : isScrolled ? 0 : 1,
                 margin: isMobile ? "0 auto" : "0",
+                cursor: "pointer",
               }}
-            >
-              JPPERFORMANCECARS
-            </Typography>
+            />
 
             {!isMobile && (
               <MotionBox
@@ -493,7 +492,14 @@ const Navbar: React.FC = () => {
           </Drawer>
         </>
       )}
-      <Box sx={{ display: "flex", height: "6px", gap: "30px", px: "20px" }}>
+      <Box
+        sx={{
+          display: { xs: "none", md: "flex" },
+          height: "6px",
+          gap: "30px",
+          px: "20px",
+        }}
+      >
         <Box sx={{ flex: 1, backgroundColor: "#006620" }} />
         <Box sx={{ flex: 1, backgroundColor: "#e8e8e8" }} />
         <Box sx={{ flex: 1, backgroundColor: "#a70a0c" }} />
