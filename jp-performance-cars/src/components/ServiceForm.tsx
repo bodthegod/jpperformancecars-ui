@@ -1,6 +1,14 @@
-import React from "react";
-import { Box, Typography, TextField, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  Snackbar,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
+import emailjs from "@emailjs/browser";
 
 const FormContainer = styled(Box)(({ theme }) => ({
   width: "100%",
@@ -177,9 +185,79 @@ const FormField = styled(Box)(({ theme }) => ({
 }));
 
 const ServiceForm: React.FC = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY!);
+  }, []);
+  const [formData, setFormData] = useState({
+    vehicle: "",
+    name: "",
+    contact: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "success" | "error",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  console.log({
+    serviceId: process.env.REACT_APP_EMAILJS_SERVICE_ID,
+    templateId: process.env.REACT_APP_EMAILJS_SERVICE_TEMPLATE_ID,
+    publicKey: process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
+  });
+
+  const handleClose = () => {
+    setAlert({ ...alert, open: false });
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission
+    setIsSubmitting(true);
+
+    try {
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID!,
+        process.env.REACT_APP_EMAILJS_SERVICE_TEMPLATE_ID!,
+        {
+          vehicle: formData.vehicle,
+          name: formData.name,
+          contact: formData.contact,
+        },
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
+
+      setFormData({
+        vehicle: "",
+        name: "",
+        contact: "",
+      });
+
+      setAlert({
+        open: true,
+        message:
+          "Thank you for your service request. We will contact you shortly.",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setAlert({
+        open: true,
+        message:
+          "There was an error submitting your request. Please try again.",
+        severity: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -189,7 +267,12 @@ const ServiceForm: React.FC = () => {
         <Box component="form" onSubmit={handleSubmit}>
           <FormField>
             <SelectLabel>I would like to service my</SelectLabel>
-            <StyledSelect required defaultValue="">
+            <StyledSelect
+              required
+              name="vehicle"
+              value={formData.vehicle}
+              onChange={handleChange}
+            >
               <option value="" disabled>
                 Select vehicle...
               </option>
@@ -207,6 +290,11 @@ const ServiceForm: React.FC = () => {
               variant="standard"
               label="My name is"
               required
+              name="name"
+              value={formData.name}
+              onChange={
+                handleChange as React.ChangeEventHandler<HTMLInputElement>
+              }
               placeholder="Enter your name"
               InputLabelProps={{
                 shrink: true,
@@ -221,6 +309,11 @@ const ServiceForm: React.FC = () => {
               variant="standard"
               label="Contactable on"
               required
+              name="contact"
+              value={formData.contact}
+              onChange={
+                handleChange as React.ChangeEventHandler<HTMLInputElement>
+              }
               placeholder="Enter your number"
               InputLabelProps={{
                 shrink: true,
@@ -230,12 +323,25 @@ const ServiceForm: React.FC = () => {
           </FormField>
 
           <Box sx={{ mt: 5, textAlign: "center" }}>
-            <SubmitButton type="submit" variant="contained">
-              Submit Request
+            <SubmitButton
+              type="submit"
+              variant="contained"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Submitting..." : "Submit Request"}
             </SubmitButton>
           </Box>
         </Box>
       </FormContainer>
+      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={alert.severity}
+          sx={{ width: "100%" }}
+        >
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </PageWrapper>
   );
 };

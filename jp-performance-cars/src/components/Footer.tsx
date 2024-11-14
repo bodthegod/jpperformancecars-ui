@@ -56,7 +56,6 @@ const Footer = () => {
     <Box sx={{ bgcolor: "black", color: "white", py: 4 }}>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          {/* Showroom Section */}
           <Grid
             item
             xs={12}
