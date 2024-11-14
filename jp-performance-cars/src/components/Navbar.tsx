@@ -387,7 +387,6 @@ const Navbar: React.FC = () => {
                 opacity: 0.95,
                 color: "white",
                 textAlign: "center",
-                padding: "20px",
               },
             }}
           >
@@ -396,6 +395,7 @@ const Navbar: React.FC = () => {
                 color: "white",
                 alignSelf: "flex-end",
                 mb: 2,
+                padding: "20px",
               }}
               onClick={() => setMobileMenuOpen(false)}
             >
