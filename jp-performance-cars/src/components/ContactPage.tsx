@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -9,24 +9,87 @@ import {
   Paper,
   styled,
   Divider,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { ContactFormData } from "../types/types";
 import { ColorBars } from "./elements/ColorBars";
 import contactImage from "../assets/images/JP1.jpg";
 import { easeInOut, motion } from "framer-motion";
 import { SubmitButton } from "./ServiceForm";
+import emailjs from "@emailjs/browser";
 
 const ContactPage: React.FC = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY!);
+  }, []);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "success" | "error",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleClose = () => {
+    setAlert({ ...alert, open: false });
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const values: ContactFormData = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      phone: formData.get("phone") as string,
-      message: formData.get("message") as string,
-    };
-    console.log("Form submitted:", values);
+    setIsSubmitting(true);
+
+    try {
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID!,
+        process.env.REACT_APP_EMAILJS_CONTACT_TEMPLATE_ID!,
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+        },
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+
+      setAlert({
+        open: true,
+        message: "Thank you for getting in touch. We will contact you shortly.",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setAlert({
+        open: true,
+        message: "There was an error sending your message. Please try again.",
+        severity: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const containerVariants = {
@@ -158,6 +221,9 @@ const ContactPage: React.FC = () => {
                 placeholder="Name *"
                 margin="normal"
                 required
+                value={formData.name}
+                onChange={handleChange}
+                disabled={isSubmitting}
               />
               <TextField
                 fullWidth
@@ -166,6 +232,9 @@ const ContactPage: React.FC = () => {
                 margin="normal"
                 required
                 type="email"
+                value={formData.email}
+                onChange={handleChange}
+                disabled={isSubmitting}
               />
               <TextField
                 fullWidth
@@ -173,6 +242,9 @@ const ContactPage: React.FC = () => {
                 placeholder="Phone *"
                 margin="normal"
                 required
+                value={formData.phone}
+                onChange={handleChange}
+                disabled={isSubmitting}
               />
               <TextField
                 fullWidth
@@ -182,9 +254,16 @@ const ContactPage: React.FC = () => {
                 required
                 multiline
                 rows={6}
+                value={formData.message}
+                onChange={handleChange}
+                disabled={isSubmitting}
               />
-              <SubmitButton type="submit" variant="contained">
-                SEND
+              <SubmitButton
+                type="submit"
+                variant="contained"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "SENDING..." : "SEND"}
               </SubmitButton>
             </Box>
           </Grid>
@@ -322,6 +401,15 @@ const ContactPage: React.FC = () => {
           </AddressSection>
         </motion.div>
       </Container>
+      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={alert.severity}
+          sx={{ width: "100%" }}
+        >
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
