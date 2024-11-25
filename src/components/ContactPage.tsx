@@ -309,7 +309,9 @@ const ContactPage: React.FC = () => {
 
               <InfoSection>
                 <InfoSectionHeader variant="h6">Email</InfoSectionHeader>
-                <Typography fontWeight={700}>jasonplaydon@aol.com</Typography>
+                <Typography fontWeight={700}>
+                  jpperformancecarsuk@gmail.com
+                </Typography>
               </InfoSection>
 
               <InfoSection>
