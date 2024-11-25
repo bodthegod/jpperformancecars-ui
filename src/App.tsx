@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ContactPage from "./components/ContactPage";
@@ -14,7 +13,12 @@ import TeamPage from "./components/AboutPage/TeamPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <ScrollToTop />
       <Navbar />
       <Routes>
