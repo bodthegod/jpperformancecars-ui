@@ -121,7 +121,6 @@ const navItems = [
     dropdownItems: [
       { label: "Our Story", link: "/about/story" },
       { label: "Team", link: "/about/team" },
-      { label: "Facilities", link: "/about/facilities" },
     ],
   },
   {

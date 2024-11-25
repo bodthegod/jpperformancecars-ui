@@ -11,7 +11,6 @@ import { HomePage } from "./components/HomePage";
 import ScrollToTop from "./components/ScrollToTop";
 import StoryPage from "./components/AboutPage/StoryPage";
 import TeamPage from "./components/AboutPage/TeamPage";
-import FacilitiesPage from "./components/AboutPage/FacilitiesPage";
 
 function App() {
   return (
@@ -23,7 +22,6 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about/story" element={<StoryPage />} />
         <Route path="/about/team" element={<TeamPage />} />
-        <Route path="/about/facilities" element={<FacilitiesPage />} />
       </Routes>
       <BackToTop />
       <Footer />
