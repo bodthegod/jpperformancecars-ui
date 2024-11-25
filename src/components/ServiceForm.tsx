@@ -255,7 +255,7 @@ const ServiceForm: React.FC = () => {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper id="service-form">
       <FormContainer>
         <FormTitle>Supercar Service</FormTitle>
         <Box component="form" onSubmit={handleSubmit}>

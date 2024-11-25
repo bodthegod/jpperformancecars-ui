@@ -109,12 +109,8 @@ const navItems = [
   },
   {
     label: "SERVICES",
-    dropdownItems: [
-      "Supercar Service",
-      "Detailing",
-      "Paint Protection",
-      "Storage",
-    ],
+    dropdownItems: [],
+    link: "/services",
   },
   {
     label: "ABOUT",

@@ -94,9 +94,32 @@ const Footer = () => {
                 />
               </Box>
               <Stack spacing={1}>
-                <FooterText variant="body2">Specialist Services</FooterText>
-                <FooterText variant="body2">General Services</FooterText>
-                <FooterText variant="body2">Previous Work</FooterText>
+                <FooterText variant="body2">
+                  <span onClick={() => navigate("/services")}>
+                    Supercar Services
+                  </span>
+                </FooterText>
+                <FooterText variant="body2">
+                  <span
+                    onClick={() => {
+                      navigate("/services");
+                      setTimeout(() => {
+                        const yOffset = -100;
+                        const element =
+                          document.getElementById("pricing-section");
+                        if (element) {
+                          const y =
+                            element.getBoundingClientRect().top +
+                            window.pageYOffset +
+                            yOffset;
+                          window.scrollTo({ top: y, behavior: "smooth" });
+                        }
+                      }, 100);
+                    }}
+                  >
+                    Pricing
+                  </span>
+                </FooterText>
               </Stack>
             </FooterSection>
           </Grid>
