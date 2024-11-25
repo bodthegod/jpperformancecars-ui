@@ -209,12 +209,6 @@ const ServiceForm: React.FC = () => {
     });
   };
 
-  console.log({
-    serviceId: process.env.REACT_APP_EMAILJS_SERVICE_ID,
-    templateId: process.env.REACT_APP_EMAILJS_SERVICE_TEMPLATE_ID,
-    publicKey: process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
-  });
-
   const handleClose = () => {
     setAlert({ ...alert, open: false });
   };
