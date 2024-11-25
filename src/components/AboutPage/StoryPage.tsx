@@ -42,6 +42,7 @@ const testimonials = [
     title: "Absolutely Brilliant Service...",
     text: "Absolutely brilliant service and quality. Jason is a very talented and knowledgeable auto engineer with excellent customer service and completes jobs to the highest standard and in time. Would thoroughly recommend.",
     date: "May 2021",
+    link: "https://uk.trustpilot.com/reviews/609680bff9f4870a78724b1d",
   },
   {
     name: "Roger Benton",
@@ -50,14 +51,16 @@ const testimonials = [
     title: "Fantastic Service",
     text: "I've been using Jason for over ten years and find the service and price very reasonable. I have never had to pay up front for parts and he's a genuine guy. I've always found him to be highly skilled and professional in his work. I would highly recommend him and totally trust him with my Ferrari.",
     date: "April 2021",
+    link: "https://uk.trustpilot.com/reviews/608bd093f9f4870984b01377",
   },
   {
-    name: "Michael Roberts",
+    name: "Kris Pavlovic",
     rating: 5,
     source: "Trustpilot",
     title: "Great lads to deal with 👍",
     text: "I have used this company and the one before since 2006 followed them through their transition to the current day. Fantastic to deal with nothing to much trouble and great experience in the field of super cars always on hand to help. Looked after my 355, 360 and my Lamborghini Gallardo couldn't fault them and such good Guys to get on with all the best in future ventures",
     date: "June 2020",
+    link: "https://uk.trustpilot.com/reviews/5eed308f7dd753032471145a",
   },
 ];
 
@@ -99,6 +102,11 @@ const TestimonialsSection = React.forwardRef<HTMLDivElement>((props, ref) => (
                   display: "flex",
                   flexDirection: "column",
                   position: "relative",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  transition: "box-shadow 0.3s ease",
+                  "&:hover": {
+                    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)",
+                  },
                   "&::before": {
                     content: '""',
                     position: "absolute",
@@ -106,8 +114,7 @@ const TestimonialsSection = React.forwardRef<HTMLDivElement>((props, ref) => (
                     left: 0,
                     width: "100%",
                     height: "3px",
-                    background:
-                      "linear-gradient(to right, #006620, #e8e8e8, #a70a0c)",
+                    background: "#a70a0c",
                   },
                 }}
               >
@@ -176,10 +183,19 @@ const TestimonialsSection = React.forwardRef<HTMLDivElement>((props, ref) => (
                     }}
                   >
                     <Typography
+                      component="a"
+                      href={testimonial.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       sx={{
                         fontFamily: "'Montserrat', sans-serif",
                         fontSize: "0.9rem",
                         color: "#5f5f5f",
+                        textDecoration: "none",
+                        transition: "color 0.3s ease",
+                        "&:hover": {
+                          color: "#a70a0c",
+                        },
                       }}
                     >
                       {testimonial.source}

@@ -1,12 +1,4 @@
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  Stack,
-  styled,
-  Link,
-} from "@mui/material";
+import { Box, Container, Grid, Typography, Stack, styled } from "@mui/material";
 import { Instagram, Facebook, YouTube, Twitter } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { iconHoverVariants } from "./Navbar";
@@ -138,6 +130,9 @@ const Footer = () => {
                   </span>
                 </FooterText>
                 <FooterText variant="body2">
+                  <span onClick={() => navigate("/about/team")}>Team</span>
+                </FooterText>
+                <FooterText variant="body2">
                   <span onClick={handleTestimonialsClick}>Testimonials</span>
                 </FooterText>
               </Stack>
@@ -266,26 +261,23 @@ const Footer = () => {
             <Grid item>
               <Stack direction="row" spacing={2}>
                 <FooterText variant="body2" color="gray">
-                  Terms & Conditions
-                </FooterText>
-                <Typography variant="body2" color="gray">
-                  |
-                </Typography>
-                <FooterText variant="body2" color="gray">
-                  Privacy Policy
-                </FooterText>
-                <Typography variant="body2" color="gray">
-                  |
-                </Typography>
-                <FooterText variant="body2" color="gray">
                   <span onClick={() => navigate("/contact")}>Contact Us</span>
                 </FooterText>
                 <Typography variant="body2" color="gray">
                   |
                 </Typography>
-                <Typography variant="body2" color="gray">
-                  Website by Joe Playdon
-                </Typography>
+                <FooterText variant="body2" color="gray">
+                  <span
+                    onClick={() =>
+                      window.open(
+                        "https://joeplaydon-portfolio.vercel.app/",
+                        "_blank"
+                      )
+                    }
+                  >
+                    Website by Joe Playdon
+                  </span>
+                </FooterText>
               </Stack>
             </Grid>
           </Grid>
