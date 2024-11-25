@@ -3,7 +3,6 @@ import { Box, Container, Typography, Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import { ColorBars } from "../elements/ColorBars";
 import BuildIcon from "@mui/icons-material/Build";
-import SpeedIcon from "@mui/icons-material/Speed";
 import SecurityIcon from "@mui/icons-material/Security";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import { useNavigate } from "react-router-dom";

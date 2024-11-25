@@ -15,8 +15,6 @@ import {
 } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import PhoneIcon from "@mui/icons-material/Phone";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -87,16 +85,6 @@ export const socialLinks: SocialLink[] = [
     platform: "facebook",
     icon: <FacebookIcon sx={{ cursor: "pointer" }} />,
     url: "https://www.facebook.com/jpperformancecars/?locale=en_GB",
-  },
-  {
-    platform: "youtube",
-    icon: <YouTubeIcon sx={{ cursor: "pointer" }} />,
-    url: "https://youtube.com/jpperformancecars",
-  },
-  {
-    platform: "twitter",
-    icon: <TwitterIcon sx={{ cursor: "pointer" }} />,
-    url: "https://twitter.com/jpperformancecars",
   },
 ];
 

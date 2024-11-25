@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Typography, Stack, styled } from "@mui/material";
-import { Instagram, Facebook, YouTube, Twitter } from "@mui/icons-material";
+import { Instagram, Facebook } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { iconHoverVariants } from "./Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -190,9 +190,11 @@ const Footer = () => {
                     How To Find Us
                   </span>
                 </FooterText>
-                <FooterText variant="body2">T +44 (0)7391 710867</FooterText>
                 <FooterText variant="body2">
-                  E jpperformancecarsuk@gmail.com
+                  <strong>T</strong> +44 (0)7391 710867
+                </FooterText>
+                <FooterText variant="body2">
+                  <strong>E</strong> jpperformancecarsuk@gmail.com
                 </FooterText>
               </Stack>
             </FooterSection>
@@ -252,8 +254,6 @@ const Footer = () => {
                   icon: <Facebook />,
                   url: "https://www.facebook.com/jpperformancecars/?locale=en_GB",
                 },
-                { icon: <Twitter />, link: "#" },
-                { icon: <YouTube />, link: "#" },
               ].map((social, index) => (
                 <MotionIcon
                   style={{ cursor: "pointer" }}
