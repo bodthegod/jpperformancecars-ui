@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 import heroVideo from "../assets/videos/HeroVideo.mp4";
+
 const HeroContainer = styled(Box)`
   position: relative;
   height: 100vh;
@@ -35,16 +36,38 @@ const VideoBackground = styled.video`
 `;
 
 const HeroSection: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const playVideo = async () => {
+      try {
+        if (videoRef.current) {
+          await videoRef.current.play();
+        }
+      } catch (err) {
+        console.log("Video autoplay failed:", err);
+      }
+    };
+
+    playVideo();
+  }, []);
+
   return (
     <HeroContainer>
       <VideoBackground
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        poster="../assets/images/JP1.jpg"
+        webkit-playsinline="true" // for older iOS versions
+        poster={require("../assets/images/JP1.jpg")}
+        preload="auto"
       >
-        <source src={heroVideo} type="video/mp4" />
+        <source
+          src={heroVideo}
+          type="video/mp4; codecs=avc1.42E01E,mp4a.40.2"
+        />
         Your browser does not support the video tag.
       </VideoBackground>
     </HeroContainer>
