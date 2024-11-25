@@ -325,7 +325,7 @@ const StoryPage: React.FC = () => {
                   letterSpacing: "1px",
                 }}
               >
-                Established in 2020
+                Over 28 Years Experience
               </Typography>
               <Typography
                 sx={{

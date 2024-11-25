@@ -54,9 +54,9 @@ const teamMember = {
     high-performance vehicles has earned the trust of supercar owners across the region.`,
   expertise: [
     "Supercar Diagnostics",
-    "Performance Enhancement",
-    "Custom Modifications",
-    "Vehicle Protection",
+    "Mechanical Engineering",
+    "Engine & Mechanical Overhauls",
+    "Gearbox & Clutch Assembly",
   ],
 };
 
