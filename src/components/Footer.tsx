@@ -1,8 +1,16 @@
-import { Box, Container, Grid, Typography, Stack, styled } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Stack,
+  styled,
+  Link,
+} from "@mui/material";
 import { Instagram, Facebook, YouTube, Twitter } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { iconHoverVariants } from "./Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const MotionIcon = motion.div;
 const FooterHeading = styled(Typography)({
@@ -52,6 +60,22 @@ const FooterText = styled(Typography)({
 
 const Footer = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleTestimonialsClick = () => {
+    if (location.pathname !== "/about/story") {
+      navigate("/about/story", { state: { scrollToTestimonials: true } });
+    } else {
+      const testimonialsSection = document.querySelector(
+        "[data-testimonials-section]"
+      );
+      testimonialsSection?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   return (
     <Box sx={{ bgcolor: "black", color: "white", py: 4 }}>
       <Container maxWidth="lg">
@@ -108,9 +132,14 @@ const Footer = () => {
                 />
               </Box>
               <Stack spacing={1}>
-                <FooterText variant="body2">Our Story</FooterText>
-                <FooterText variant="body2">Why JP FAQ</FooterText>
-                <FooterText variant="body2">Testimonials</FooterText>
+                <FooterText variant="body2">
+                  <span onClick={() => navigate("/about/story")}>
+                    Our Story
+                  </span>
+                </FooterText>
+                <FooterText variant="body2">
+                  <span onClick={handleTestimonialsClick}>Testimonials</span>
+                </FooterText>
               </Stack>
             </FooterSection>
           </Grid>
@@ -145,7 +174,7 @@ const Footer = () => {
                 </FooterText>
                 <FooterText variant="body2">T +44 (0)7391 710867</FooterText>
                 <FooterText variant="body2">
-                  E sales@jpperformancecars.com
+                  E jpperformancecarsuk@gmail.com
                 </FooterText>
               </Stack>
             </FooterSection>

@@ -118,7 +118,11 @@ const navItems = [
   },
   {
     label: "ABOUT",
-    dropdownItems: ["Our Story", "Team", "Facilities"],
+    dropdownItems: [
+      { label: "Our Story", link: "/about/story" },
+      { label: "Team", link: "/about/team" },
+      { label: "Facilities", link: "/about/facilities" },
+    ],
   },
   {
     label: "CONTACT",
@@ -159,6 +163,15 @@ const Navbar: React.FC = () => {
 
   const handleClose = (label: string) => {
     setAnchorEl({ ...anchorEl, [label]: null });
+  };
+
+  const handleDropdownNavigation = (dropdownItem: {
+    label: string;
+    link: string;
+  }) => {
+    navigate(dropdownItem.link);
+    handleClose("ABOUT");
+    setMobileMenuOpen(false);
   };
 
   useEffect(() => {
@@ -342,10 +355,22 @@ const Navbar: React.FC = () => {
                     >
                       {item.dropdownItems.map((dropdownItem) => (
                         <MenuItem
-                          key={dropdownItem}
-                          onClick={() => handleClose(item.label)}
+                          key={
+                            typeof dropdownItem === "string"
+                              ? dropdownItem
+                              : dropdownItem.label
+                          }
+                          onClick={() => {
+                            if (typeof dropdownItem === "string") {
+                              handleClose(item.label);
+                            } else {
+                              handleDropdownNavigation(dropdownItem);
+                            }
+                          }}
                         >
-                          {dropdownItem}
+                          {typeof dropdownItem === "string"
+                            ? dropdownItem
+                            : dropdownItem.label}
                         </MenuItem>
                       ))}
                     </Menu>
@@ -475,13 +500,22 @@ const Navbar: React.FC = () => {
                     >
                       {item.dropdownItems.map((dropdownItem) => (
                         <MenuItem
-                          key={dropdownItem}
+                          key={
+                            typeof dropdownItem === "string"
+                              ? dropdownItem
+                              : dropdownItem.label
+                          }
                           onClick={() => {
-                            handleClose(item.label);
-                            setMobileMenuOpen(false);
+                            if (typeof dropdownItem === "string") {
+                              handleClose(item.label);
+                            } else {
+                              handleDropdownNavigation(dropdownItem);
+                            }
                           }}
                         >
-                          {dropdownItem}
+                          {typeof dropdownItem === "string"
+                            ? dropdownItem
+                            : dropdownItem.label}
                         </MenuItem>
                       ))}
                     </Menu>
