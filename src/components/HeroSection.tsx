@@ -62,7 +62,6 @@ const HeroSection: React.FC = () => {
         playsInline
         muted
         loop
-        poster={require("../assets/images/JP1.jpg")}
         preload="auto"
       >
         <source src={heroVideo} type="video/mp4" />
