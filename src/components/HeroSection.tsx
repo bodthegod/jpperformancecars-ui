@@ -42,6 +42,8 @@ const HeroSection: React.FC = () => {
     const playVideo = async () => {
       try {
         if (videoRef.current) {
+          videoRef.current.defaultMuted = true;
+          videoRef.current.muted = true;
           await videoRef.current.play();
         }
       } catch (err) {
@@ -57,17 +59,13 @@ const HeroSection: React.FC = () => {
       <VideoBackground
         ref={videoRef}
         autoPlay
+        playsInline
         muted
         loop
-        playsInline
-        webkit-playsinline="true" // for older iOS versions
         poster={require("../assets/images/JP1.jpg")}
         preload="auto"
       >
-        <source
-          src={heroVideo}
-          type="video/mp4; codecs=avc1.42E01E,mp4a.40.2"
-        />
+        <source src={heroVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </VideoBackground>
     </HeroContainer>
