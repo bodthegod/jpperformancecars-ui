@@ -4,7 +4,6 @@ import {
   Container,
   Typography,
   TextField,
-  Button,
   Grid,
   Paper,
   styled,
@@ -12,7 +11,6 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { ContactFormData } from "../types/types";
 import { ColorBars } from "./elements/ColorBars";
 import contactImage from "../assets/images/JP1.jpg";
 import { easeInOut, motion } from "framer-motion";
@@ -178,6 +176,7 @@ const ContactPage: React.FC = () => {
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d9675.918571283357!2d-1.9166357!3d52.6784054!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870a0a2df0b162d%3A0xcf2f105f5bbbe1d3!2sJP%20Performance%20Cars%20Ltd!5e0!3m2!1sen!2suk!4v1731071724037!5m2!1sen!2suk"
           width="100%"
+          title="JP Performance Cars Location"
           height="100%"
           style={{
             border: 0,
