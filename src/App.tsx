@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ContactPage from "./components/ContactPage";
 import BackToTop from "./components/BackToTop";
@@ -12,8 +11,21 @@ import StoryPage from "./components/AboutPage/StoryPage";
 import TeamPage from "./components/AboutPage/TeamPage";
 import ServicesPage from "./components/ServicesPage/ServicesPage";
 import NotFound from "./components/NotFound";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { initGA, logPageView } from "./analytics/analytics";
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    initGA();
+  }, []);
+
+  useEffect(() => {
+    logPageView();
+  }, [location]);
+
   return (
     <BrowserRouter
       future={{
