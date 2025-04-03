@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 import heroVideo from "../assets/videos/HeroVideo.mp4";
+import thumbnailImage from "../assets/images/video-thumbnail.jpg";
 
 const HeroContainer = styled(Box)`
   position: relative;
@@ -22,8 +23,9 @@ const VideoBackground = styled.video`
   bottom: 0;
   min-width: 100%;
   min-height: 100%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  margin: auto;
   z-index: -1;
   object-fit: cover;
   @media (max-width: 768px) {
@@ -62,6 +64,7 @@ const HeroSection: React.FC = () => {
         playsInline
         muted
         loop
+        poster={thumbnailImage}
         preload="auto"
       >
         <source src={heroVideo} type="video/mp4" />
