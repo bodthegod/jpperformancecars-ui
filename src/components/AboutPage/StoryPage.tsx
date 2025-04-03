@@ -5,6 +5,7 @@ import { ColorBars } from "../elements/ColorBars";
 import workshopImage from "../../assets/images/JP1.jpg"; // Update with your image
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import { useLocation } from "react-router-dom";
+import SEO from "../SEO";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -225,6 +226,46 @@ const StoryPage: React.FC = () => {
   const testimonialsSectionRef = React.useRef<HTMLDivElement>(null);
   const location = useLocation();
 
+  const storyPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "JP Performance Cars - Our Story",
+    description:
+      "Learn about JP Performance Cars' journey and expertise in supercar servicing with over 28 years of experience in Burntwood, Staffordshire.",
+    mainEntity: {
+      "@type": "Organization",
+      name: "JP Performance Cars",
+      founder: {
+        "@type": "Person",
+        name: "Jason Playdon",
+      },
+    },
+  };
+
+  const reviewsSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "JP Performance Cars",
+    review: testimonials.map((testimonial) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: testimonial.name,
+      },
+      datePublished: testimonial.date,
+      reviewBody: testimonial.text,
+      name: testimonial.title,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: testimonial.rating,
+        bestRating: "5",
+      },
+    })),
+  };
+
+  // Combine both schemas
+  const combinedSchema = [storyPageSchema, reviewsSchema];
+
   useEffect(() => {
     if (location.state?.scrollToTestimonials) {
       const scrollToTestimonialsWithOffset = () => {
@@ -245,202 +286,212 @@ const StoryPage: React.FC = () => {
   }, [location]);
 
   return (
-    <Box sx={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-      <Container
-        maxWidth="lg"
-        sx={{
-          marginTop: {
-            xs: "20%",
-            sm: "15%",
-            md: "15%",
-            lg: "14%",
-            xl: "10%",
-          },
-        }}
-      >
-        {/* Title Section */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={containerVariants}
-        >
-          <motion.div variants={itemVariants}>
-            <Typography
-              variant="h3"
-              align="center"
-              sx={{
-                mb: 1,
-                fontFamily: "Times New Roman, sans-serif",
-                padding: "2.5rem 0",
-                fontSize: "34px",
-                letterSpacing: "2px",
-                lineHeight: "1.2",
-                color: "#000",
-              }}
-            >
-              OUR STORY
-            </Typography>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
-              <ColorBars />
-            </Box>
-          </motion.div>
-        </motion.div>
+    <>
+      <SEO
+        title="Our Story | JP Performance Cars | Supercar Specialists"
+        description="With over 28 years of experience, JP Performance Cars provides expert supercar servicing in Staffordshire. Founded by Jason Playdon with a passion for automotive excellence."
+        keywords="supercar servicing history, JP Performance Cars story, Ferrari specialist Staffordshire, luxury car repair experience"
+        canonical="https://www.jpperformancecars.co.uk/about/story"
+        structuredData={combinedSchema}
+      />
 
-        {/* Content Section */}
-        <Grid container spacing={6}>
-          <Grid item xs={12} md={6}>
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              <Box
-                component="img"
-                src={workshopImage}
-                alt="JP Performance Workshop"
+      <Box sx={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+        <Container
+          maxWidth="lg"
+          sx={{
+            marginTop: {
+              xs: "20%",
+              sm: "15%",
+              md: "15%",
+              lg: "14%",
+              xl: "10%",
+            },
+          }}
+        >
+          {/* Title Section */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-150px" }}
+            variants={containerVariants}
+          >
+            <motion.div variants={itemVariants}>
+              <Typography
+                variant="h3"
+                align="center"
                 sx={{
-                  width: "100%",
-                  height: "400px",
-                  objectFit: "cover",
-                  mb: { xs: 4, md: 0 },
+                  mb: 1,
+                  fontFamily: "Times New Roman, sans-serif",
+                  padding: "2.5rem 0",
+                  fontSize: "34px",
+                  letterSpacing: "2px",
+                  lineHeight: "1.2",
+                  color: "#000",
                 }}
-              />
+              >
+                OUR STORY
+              </Typography>
             </motion.div>
+            <motion.div variants={itemVariants}>
+              <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+                <ColorBars />
+              </Box>
+            </motion.div>
+          </motion.div>
+
+          {/* Content Section */}
+          <Grid container spacing={6}>
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
+                <Box
+                  component="img"
+                  src={workshopImage}
+                  alt="JP Performance Workshop"
+                  sx={{
+                    width: "100%",
+                    height: "400px",
+                    objectFit: "cover",
+                    mb: { xs: 4, md: 0 },
+                  }}
+                />
+              </motion.div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: "'Times New Roman', serif",
+                    color: "#a70a0c",
+                    fontSize: "1.5rem",
+                    mb: 3,
+                    letterSpacing: "1px",
+                  }}
+                >
+                  Over 28 Years Experience
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    color: "#5f5f5f",
+                    mb: 3,
+                    lineHeight: 1.8,
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  JP Performance Cars was founded with a clear vision: to
+                  provide unparalleled service and expertise in the maintenance
+                  and enhancement of high-performance vehicles. What began as a
+                  passion for automotive excellence has grown into one of the
+                  region's most trusted names in supercar care.
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    color: "#5f5f5f",
+                    mb: 3,
+                    lineHeight: 1.8,
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  Our journey started when founder Jason Playdon recognized the
+                  need for a specialized service center that could match the
+                  precision and quality demanded by supercar owners. Today, we
+                  continue to build on that foundation, combining traditional
+                  expertise with cutting-edge technology.
+                </Typography>
+              </motion.div>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
+
+          {/* Values Section */}
+          <Box sx={{ mt: 8 }}>
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
             >
               <Typography
+                align="center"
                 sx={{
                   fontFamily: "'Times New Roman', serif",
-                  color: "#a70a0c",
-                  fontSize: "1.5rem",
-                  mb: 3,
-                  letterSpacing: "1px",
+                  fontSize: "1.8rem",
+                  mb: 4,
+                  letterSpacing: "2px",
+                  color: "#000",
                 }}
               >
-                Over 28 Years Experience
+                OUR VALUES
               </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  color: "#5f5f5f",
-                  mb: 3,
-                  lineHeight: 1.8,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                JP Performance Cars was founded with a clear vision: to provide
-                unparalleled service and expertise in the maintenance and
-                enhancement of high-performance vehicles. What began as a
-                passion for automotive excellence has grown into one of the
-                region's most trusted names in supercar care.
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  color: "#5f5f5f",
-                  mb: 3,
-                  lineHeight: 1.8,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                Our journey started when founder Jason Playdon recognized the
-                need for a specialized service center that could match the
-                precision and quality demanded by supercar owners. Today, we
-                continue to build on that foundation, combining traditional
-                expertise with cutting-edge technology.
-              </Typography>
+              <Grid container spacing={4} sx={{ mt: 2 }}>
+                {[
+                  {
+                    title: "Excellence",
+                    description:
+                      "We strive for perfection in every detail of our work.",
+                  },
+                  {
+                    title: "Integrity",
+                    description: "Honest, transparent service you can trust.",
+                  },
+                  {
+                    title: "Innovation",
+                    description:
+                      "Embracing the latest technology and techniques.",
+                  },
+                  {
+                    title: "Passion",
+                    description: "True enthusiasm for automotive excellence.",
+                  },
+                ].map((value, index) => (
+                  <Grid item xs={12} sm={6} md={3} key={index}>
+                    <Box
+                      sx={{
+                        textAlign: "center",
+                        p: 3,
+                        height: "100%",
+                        backgroundColor: "#f5f5f5",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontFamily: "'Times New Roman', serif",
+                          fontSize: "1.2rem",
+                          mb: 2,
+                          color: "#000",
+                          letterSpacing: "1px",
+                        }}
+                      >
+                        {value.title}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily: "'Montserrat', sans-serif",
+                          color: "#5f5f5f",
+                          lineHeight: 1.6,
+                        }}
+                      >
+                        {value.description}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
             </motion.div>
-          </Grid>
-        </Grid>
+          </Box>
 
-        {/* Values Section */}
-        <Box sx={{ mt: 8 }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <Typography
-              align="center"
-              sx={{
-                fontFamily: "'Times New Roman', serif",
-                fontSize: "1.8rem",
-                mb: 4,
-                letterSpacing: "2px",
-                color: "#000",
-              }}
-            >
-              OUR VALUES
-            </Typography>
-            <Grid container spacing={4} sx={{ mt: 2 }}>
-              {[
-                {
-                  title: "Excellence",
-                  description:
-                    "We strive for perfection in every detail of our work.",
-                },
-                {
-                  title: "Integrity",
-                  description: "Honest, transparent service you can trust.",
-                },
-                {
-                  title: "Innovation",
-                  description:
-                    "Embracing the latest technology and techniques.",
-                },
-                {
-                  title: "Passion",
-                  description: "True enthusiasm for automotive excellence.",
-                },
-              ].map((value, index) => (
-                <Grid item xs={12} sm={6} md={3} key={index}>
-                  <Box
-                    sx={{
-                      textAlign: "center",
-                      p: 3,
-                      height: "100%",
-                      backgroundColor: "#f5f5f5",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontFamily: "'Times New Roman', serif",
-                        fontSize: "1.2rem",
-                        mb: 2,
-                        color: "#000",
-                        letterSpacing: "1px",
-                      }}
-                    >
-                      {value.title}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontFamily: "'Montserrat', sans-serif",
-                        color: "#5f5f5f",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {value.description}
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </motion.div>
-        </Box>
-
-        <TestimonialsSection ref={testimonialsSectionRef} />
-      </Container>
-    </Box>
+          <TestimonialsSection ref={testimonialsSectionRef} />
+        </Container>
+      </Box>
+    </>
   );
 };
 

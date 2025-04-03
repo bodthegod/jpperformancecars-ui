@@ -16,6 +16,7 @@ import contactImage from "../assets/images/JP1.jpg";
 import { easeInOut, motion } from "framer-motion";
 import { SubmitButton } from "./ServiceForm";
 import emailjs from "@emailjs/browser";
+import SEO from "./SEO";
 
 const ContactPage: React.FC = () => {
   useEffect(() => {
@@ -118,300 +119,371 @@ const ContactPage: React.FC = () => {
     },
   };
 
+  // Add this structured data for your contact page
+  const contactPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact JP Performance Cars",
+    description:
+      "Get in touch with our supercar servicing specialists in Burntwood, Staffordshire.",
+  };
+
+  // Add local business schema with contact information
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "AutoRepair",
+    name: "JP Performance Cars Ltd",
+    image: "https://www.jpperformancecars.co.uk/og-image.jpg",
+    telephone: "+44 (0)7391 710867",
+    email: "jpperformancecarsuk@gmail.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Unit 10, Metal Products Business Park, Prospect Road",
+      addressLocality: "Burntwood",
+      addressRegion: "Staffordshire",
+      postalCode: "WS7 0AE",
+      addressCountry: "UK",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: "52.6784054",
+      longitude: "-1.9166357",
+    },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "09:00",
+        closes: "18:00",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Saturday"],
+        opens: "10:00",
+        closes: "16:00",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Sunday"],
+        opens: "00:00",
+        closes: "00:00",
+      },
+    ],
+    url: "https://www.jpperformancecars.co.uk/contact",
+  };
+
+  // Combine the schemas
+  const combinedSchema = [contactPageSchema, localBusinessSchema];
+
   return (
-    <Box>
-      <Container
-        maxWidth="lg"
-        sx={{
-          marginTop: {
-            xs: "20%",
-            sm: "15%",
-            md: "15%",
-            lg: "14%",
-            xl: "10%",
-          },
-        }}
-      >
-        {/* Title Section */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={containerVariants}
-        >
-          <motion.div variants={itemVariants}>
-            <Typography
-              variant="h3"
-              align="center"
-              sx={{
-                mb: 1,
-                fontFamily: "Times New Roman, sans-serif",
-                padding: "2.5rem 0",
-                fontSize: "34px",
-                letterSpacing: "2px",
-                lineHeight: "1.2",
-              }}
-            >
-              CONTACT US
-            </Typography>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
-              <ColorBars />
-            </Box>
-          </motion.div>
-        </motion.div>
-      </Container>
+    <>
+      {/* Add SEO component at the top of your return */}
+      <SEO
+        title="Contact Us | JP Performance Cars | Supercar Specialists"
+        description="Contact JP Performance Cars in Burntwood, Staffordshire for expert supercar servicing and repairs. Call us at +44 (0)7391 710867 or visit our workshop."
+        keywords="supercar servicing contact Staffordshire, Ferrari specialist near me, Lamborghini maintenance Burntwood, exotic car repair contact, performance car service booking, Ferrari engine rebuild contact"
+        canonical="https://www.jpperformancecars.co.uk/contact"
+        structuredData={combinedSchema}
+      />
 
-      {/* Map Section - Outside Container for full width */}
-      <Box
-        sx={{
-          width: "100%",
-          height: "400px",
-          mb: 4,
-          position: "relative",
-          backgroundColor: "#f5f5f5",
-        }}
-      >
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d9675.918571283357!2d-1.9166357!3d52.6784054!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870a0a2df0b162d%3A0xcf2f105f5bbbe1d3!2sJP%20Performance%20Cars%20Ltd!5e0!3m2!1sen!2suk!4v1731071724037!5m2!1sen!2suk"
-          width="100%"
-          title="JP Performance Cars Location"
-          height="100%"
-          style={{
-            border: 0,
-            position: "absolute",
-            top: 0,
-            left: 0,
+      <Box>
+        <Container
+          maxWidth="lg"
+          sx={{
+            marginTop: {
+              xs: "20%",
+              sm: "15%",
+              md: "15%",
+              lg: "14%",
+              xl: "10%",
+            },
           }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-      </Box>
-
-      {/* Content Grid */}
-      <Container maxWidth="lg" sx={{ mb: 10 }}>
-        <Grid container spacing={4}>
-          {/* Form Section */}
-          <Grid item xs={12} md={5}>
-            <ContactHeading variant="h5" sx={{ mb: 3 }}>
-              GET IN TOUCH
-            </ContactHeading>
-
-            <Box
-              sx={{
-                display: "flex",
-                width: "40px",
-                height: "2px",
-                marginTop: "8px",
-                marginBottom: "16px",
-              }}
-            >
-              <Box sx={{ flex: 1, backgroundColor: "#006620" }} />
-              <Box sx={{ flex: 1, backgroundColor: "#e8e8e8" }} />
-              <Box sx={{ flex: 1, backgroundColor: "#a70a0c" }} />
-            </Box>
-
-            <Box component="form" onSubmit={handleSubmit}>
-              <TextField
-                fullWidth
-                name="name"
-                placeholder="Name *"
-                margin="normal"
-                required
-                value={formData.name}
-                onChange={handleChange}
-                disabled={isSubmitting}
-              />
-              <TextField
-                fullWidth
-                name="email"
-                placeholder="Email *"
-                margin="normal"
-                required
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                disabled={isSubmitting}
-              />
-              <TextField
-                fullWidth
-                name="phone"
-                placeholder="Phone *"
-                margin="normal"
-                required
-                value={formData.phone}
-                onChange={handleChange}
-                disabled={isSubmitting}
-              />
-              <TextField
-                fullWidth
-                name="message"
-                placeholder="Message *"
-                margin="normal"
-                required
-                multiline
-                rows={6}
-                value={formData.message}
-                onChange={handleChange}
-                disabled={isSubmitting}
-              />
-              <SubmitButton
-                type="submit"
-                variant="contained"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "SENDING..." : "SEND"}
-              </SubmitButton>
-            </Box>
-          </Grid>
-
-          {/* Vertical Divider */}
-          <Grid
-            item
-            md={1}
-            sx={{
-              display: { xs: "none", md: "flex" },
-              justifyContent: "center",
-              alignItems: "stretch",
-            }}
-          >
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{
-                height: "100%",
-                borderColor: "rgba(0, 0, 0, 0.1)",
-                borderRightWidth: 1,
-              }}
-            />
-          </Grid>
-
-          {/* Contact Info Section */}
-          <Grid item xs={12} md={5}>
-            <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
-              <Paper
-                sx={{
-                  height: 250,
-                  mb: 4,
-                  backgroundImage: `url(${contactImage})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              />
-
-              <InfoSection>
-                <InfoSectionHeader variant="h6">Phone</InfoSectionHeader>
-                <Typography fontWeight={700}>+44 (0)7391 710867</Typography>
-              </InfoSection>
-
-              <InfoSection>
-                <InfoSectionHeader variant="h6">Email</InfoSectionHeader>
-                <Typography fontWeight={700}>
-                  jpperformancecarsuk@gmail.com
-                </Typography>
-              </InfoSection>
-
-              <InfoSection>
-                <InfoSectionHeader variant="h6">
-                  Opening Hours
-                </InfoSectionHeader>
-                <Box>
-                  <HoursRow
-                    sx={{
-                      justifyContent: {
-                        xs: "center",
-                        md: "space-between",
-                      },
-                      gap: { xs: 2, md: 0 },
-                    }}
-                  >
-                    <Typography fontWeight={700}>Monday-Friday</Typography>
-                    <Typography color="#5f5f5f">9:00am-6:00pm</Typography>
-                  </HoursRow>
-                  <HoursRow
-                    sx={{
-                      justifyContent: {
-                        xs: "center",
-                        md: "space-between",
-                      },
-                      gap: { xs: 2, md: 0 },
-                    }}
-                  >
-                    <Typography fontWeight={700}>Saturday</Typography>
-                    <Typography color="#5f5f5f">10:00am-4:00pm</Typography>
-                  </HoursRow>
-                  <HoursRow
-                    sx={{
-                      justifyContent: {
-                        xs: "center",
-                        md: "space-between",
-                      },
-                      gap: { xs: 2, md: 0 },
-                    }}
-                  >
-                    <Typography fontWeight={700}>Sunday</Typography>
-                    <Typography color="#5f5f5f">Closed</Typography>
-                  </HoursRow>
-                </Box>
-              </InfoSection>
-            </Box>
-          </Grid>
-        </Grid>
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={containerVariants}
         >
-          <AddressSection>
+          {/* Title Section */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-150px" }}
+            variants={containerVariants}
+          >
             <motion.div variants={itemVariants}>
               <Typography
-                variant="h6"
-                fontFamily="Times New Roman, sans-serif"
+                variant="h3"
                 align="center"
-                letterSpacing="3px"
-                color="#111"
-                fontSize="30px"
-                sx={{ mb: 2 }}
+                sx={{
+                  mb: 1,
+                  fontFamily: "Times New Roman, sans-serif",
+                  padding: "2.5rem 0",
+                  fontSize: "34px",
+                  letterSpacing: "2px",
+                  lineHeight: "1.2",
+                }}
               >
-                ADDRESS
+                CONTACT US
               </Typography>
             </motion.div>
             <motion.div variants={itemVariants}>
-              <Box
-                sx={{
-                  textAlign: "center",
-                  letterSpacing: "1px",
-                  fontFamily: "Monserrat, sans-serif",
-                  fontSize: ".875em",
-                  color: "#5f5f5f",
-                }}
-              >
-                <Typography>JP Performance Cars Ltd.</Typography>
-                <Typography>Unit 10</Typography>
-                <Typography>Metal Products Business Park</Typography>
-                <Typography>Prospect Road</Typography>
-                <Typography>Burntwood</Typography>
-                <Typography>Staffordshire</Typography>
-                <Typography>WS7 0AE</Typography>
-                <Typography>United Kingdom</Typography>
+              <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+                <ColorBars />
               </Box>
             </motion.div>
-          </AddressSection>
-        </motion.div>
-      </Container>
-      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity={alert.severity}
-          sx={{ width: "100%" }}
+          </motion.div>
+        </Container>
+
+        {/* Map Section - Outside Container for full width */}
+        <Box
+          sx={{
+            width: "100%",
+            height: "400px",
+            mb: 4,
+            position: "relative",
+            backgroundColor: "#f5f5f5",
+          }}
         >
-          {alert.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d9675.918571283357!2d-1.9166357!3d52.6784054!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870a0a2df0b162d%3A0xcf2f105f5bbbe1d3!2sJP%20Performance%20Cars%20Ltd!5e0!3m2!1sen!2suk!4v1731071724037!5m2!1sen!2suk"
+            width="100%"
+            title="JP Performance Cars Location"
+            height="100%"
+            style={{
+              border: 0,
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </Box>
+
+        {/* Content Grid */}
+        <Container maxWidth="lg" sx={{ mb: 10 }}>
+          <Grid container spacing={4}>
+            {/* Form Section */}
+            <Grid item xs={12} md={5}>
+              <ContactHeading variant="h5" sx={{ mb: 3 }}>
+                GET IN TOUCH
+              </ContactHeading>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "40px",
+                  height: "2px",
+                  marginTop: "8px",
+                  marginBottom: "16px",
+                }}
+              >
+                <Box sx={{ flex: 1, backgroundColor: "#006620" }} />
+                <Box sx={{ flex: 1, backgroundColor: "#e8e8e8" }} />
+                <Box sx={{ flex: 1, backgroundColor: "#a70a0c" }} />
+              </Box>
+
+              <Box component="form" onSubmit={handleSubmit}>
+                <TextField
+                  fullWidth
+                  name="name"
+                  placeholder="Name *"
+                  margin="normal"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  disabled={isSubmitting}
+                />
+                <TextField
+                  fullWidth
+                  name="email"
+                  placeholder="Email *"
+                  margin="normal"
+                  required
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  disabled={isSubmitting}
+                />
+                <TextField
+                  fullWidth
+                  name="phone"
+                  placeholder="Phone *"
+                  margin="normal"
+                  required
+                  value={formData.phone}
+                  onChange={handleChange}
+                  disabled={isSubmitting}
+                />
+                <TextField
+                  fullWidth
+                  name="message"
+                  placeholder="Message *"
+                  margin="normal"
+                  required
+                  multiline
+                  rows={6}
+                  value={formData.message}
+                  onChange={handleChange}
+                  disabled={isSubmitting}
+                />
+                <SubmitButton
+                  type="submit"
+                  variant="contained"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "SENDING..." : "SEND"}
+                </SubmitButton>
+              </Box>
+            </Grid>
+
+            {/* Vertical Divider */}
+            <Grid
+              item
+              md={1}
+              sx={{
+                display: { xs: "none", md: "flex" },
+                justifyContent: "center",
+                alignItems: "stretch",
+              }}
+            >
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{
+                  height: "100%",
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderRightWidth: 1,
+                }}
+              />
+            </Grid>
+
+            {/* Contact Info Section */}
+            <Grid item xs={12} md={5}>
+              <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
+                <Paper
+                  sx={{
+                    height: 250,
+                    mb: 4,
+                    backgroundImage: `url(${contactImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
+
+                <InfoSection>
+                  <InfoSectionHeader variant="h6">Phone</InfoSectionHeader>
+                  <Typography fontWeight={700}>+44 (0)7391 710867</Typography>
+                </InfoSection>
+
+                <InfoSection>
+                  <InfoSectionHeader variant="h6">Email</InfoSectionHeader>
+                  <Typography fontWeight={700}>
+                    jpperformancecarsuk@gmail.com
+                  </Typography>
+                </InfoSection>
+
+                <InfoSection>
+                  <InfoSectionHeader variant="h6">
+                    Opening Hours
+                  </InfoSectionHeader>
+                  <Box>
+                    <HoursRow
+                      sx={{
+                        justifyContent: {
+                          xs: "center",
+                          md: "space-between",
+                        },
+                        gap: { xs: 2, md: 0 },
+                      }}
+                    >
+                      <Typography fontWeight={700}>Monday-Friday</Typography>
+                      <Typography color="#5f5f5f">9:00am-6:00pm</Typography>
+                    </HoursRow>
+                    <HoursRow
+                      sx={{
+                        justifyContent: {
+                          xs: "center",
+                          md: "space-between",
+                        },
+                        gap: { xs: 2, md: 0 },
+                      }}
+                    >
+                      <Typography fontWeight={700}>Saturday</Typography>
+                      <Typography color="#5f5f5f">10:00am-4:00pm</Typography>
+                    </HoursRow>
+                    <HoursRow
+                      sx={{
+                        justifyContent: {
+                          xs: "center",
+                          md: "space-between",
+                        },
+                        gap: { xs: 2, md: 0 },
+                      }}
+                    >
+                      <Typography fontWeight={700}>Sunday</Typography>
+                      <Typography color="#5f5f5f">Closed</Typography>
+                    </HoursRow>
+                  </Box>
+                </InfoSection>
+              </Box>
+            </Grid>
+          </Grid>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-150px" }}
+            variants={containerVariants}
+          >
+            <AddressSection>
+              <motion.div variants={itemVariants}>
+                <Typography
+                  variant="h6"
+                  fontFamily="Times New Roman, sans-serif"
+                  align="center"
+                  letterSpacing="3px"
+                  color="#111"
+                  fontSize="30px"
+                  sx={{ mb: 2 }}
+                >
+                  ADDRESS
+                </Typography>
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    letterSpacing: "1px",
+                    fontFamily: "Monserrat, sans-serif",
+                    fontSize: ".875em",
+                    color: "#5f5f5f",
+                  }}
+                >
+                  <Typography>JP Performance Cars Ltd.</Typography>
+                  <Typography>Unit 10</Typography>
+                  <Typography>Metal Products Business Park</Typography>
+                  <Typography>Prospect Road</Typography>
+                  <Typography>Burntwood</Typography>
+                  <Typography>Staffordshire</Typography>
+                  <Typography>WS7 0AE</Typography>
+                  <Typography>United Kingdom</Typography>
+                </Box>
+              </motion.div>
+            </AddressSection>
+          </motion.div>
+        </Container>
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alert.severity}
+            sx={{ width: "100%" }}
+          >
+            {alert.message}
+          </Alert>
+        </Snackbar>
+      </Box>
+    </>
   );
 };
 

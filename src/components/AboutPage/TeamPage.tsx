@@ -3,7 +3,8 @@ import { Box, Container, Typography, Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
 import { ColorBars } from "../elements/ColorBars";
-import dadImage from "../../assets/images/dad.jpg";
+import jasonImage from "../../assets/images/jason.jpg";
+import SEO from "../SEO";
 
 const TeamMemberCard = styled(motion.div)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -47,7 +48,7 @@ const itemVariants = {
 const teamMember = {
   name: "Jason Playdon",
   position: "Founder & Director",
-  image: dadImage,
+  image: jasonImage,
   description: `With over a decade of experience in the automotive industry, 
     Jason Playdon has established JP Performance Cars as a leading name in supercar 
     servicing and maintenance. His dedication to excellence and passion for 
@@ -61,143 +62,180 @@ const teamMember = {
 };
 
 const TeamPage: React.FC = () => {
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Jason Playdon",
+    jobTitle: "Founder & Director",
+    description:
+      "With over a decade of experience in the automotive industry, Jason Playdon has established JP Performance Cars as a leading name in supercar servicing and maintenance.",
+    image: "https://www.jpperformancecars.co.uk/jason-playdon.jpg",
+    worksFor: {
+      "@type": "AutoRepair",
+      name: "JP Performance Cars",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Burntwood",
+        addressRegion: "Staffordshire",
+        postalCode: "WS7 0AE",
+        addressCountry: "UK",
+      },
+    },
+    knowsAbout: [
+      "Supercar Diagnostics",
+      "Mechanical Engineering",
+      "Engine & Mechanical Overhauls",
+      "Gearbox & Clutch Assembly",
+    ],
+  };
+
   return (
-    <Box sx={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-      <Container
-        maxWidth="lg"
-        sx={{
-          marginTop: {
-            xs: "20%",
-            sm: "15%",
-            md: "15%",
-            lg: "14%",
-            xl: "10%",
-          },
-        }}
-      >
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
-          variants={containerVariants}
+    <>
+      <SEO
+        title="Our Team | JP Performance Cars | Supercar Specialists"
+        description="Meet Jason Playdon, founder and director of JP Performance Cars with extensive experience in supercar servicing, diagnostics, and mechanical engineering for luxury vehicles."
+        keywords="Jason Playdon, supercar specialist, Ferrari technician, Lamborghini expert, luxury car engineer Staffordshire"
+        canonical="https://www.jpperformancecars.co.uk/about/team"
+        structuredData={personSchema}
+      />
+
+      <Box sx={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+        <Container
+          maxWidth="lg"
+          sx={{
+            marginTop: {
+              xs: "20%",
+              sm: "15%",
+              md: "15%",
+              lg: "14%",
+              xl: "10%",
+            },
+          }}
         >
-          <motion.div variants={itemVariants}>
-            <Typography
-              variant="h3"
-              align="center"
-              sx={{
-                mb: 1,
-                fontFamily: "Times New Roman, sans-serif",
-                padding: "2.5rem 0",
-                fontSize: "34px",
-                letterSpacing: "2px",
-                lineHeight: "1.2",
-                color: "#000",
-              }}
-            >
-              MEET THE DIRECTOR
-            </Typography>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
-              <ColorBars />
-            </Box>
-          </motion.div>
-        </motion.div>
-
-        <Grid container spacing={6} justifyContent="center">
-          <Grid item xs={12}>
-            <TeamMemberCard
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <Box
-                component="img"
-                src={teamMember.image}
-                alt={teamMember.name}
-                sx={{
-                  width: 300,
-                  height: 300,
-                  objectFit: "cover",
-                  marginBottom: 4,
-                  border: "3px solid #a70a0c",
-                  borderRadius: "50%",
-                }}
-              />
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-150px" }}
+            variants={containerVariants}
+          >
+            <motion.div variants={itemVariants}>
               <Typography
+                variant="h3"
+                align="center"
                 sx={{
-                  fontFamily: "'Times New Roman', serif",
-                  fontWeight: 600,
-                  mb: 2,
-                  color: "#000",
-                  fontSize: "2rem",
+                  mb: 1,
+                  fontFamily: "Times New Roman, sans-serif",
+                  padding: "2.5rem 0",
+                  fontSize: "34px",
                   letterSpacing: "2px",
+                  lineHeight: "1.2",
+                  color: "#000",
                 }}
               >
-                {teamMember.name}
+                MEET THE DIRECTOR
               </Typography>
-              <Typography
-                sx={{
-                  color: "#a70a0c",
-                  fontFamily: "'Montserrat', sans-serif",
-                  mb: 4,
-                  fontWeight: 500,
-                  letterSpacing: "1.5px",
-                }}
-              >
-                {teamMember.position}
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  color: "#5f5f5f",
-                  lineHeight: 1.8,
-                  fontSize: "1rem",
-                  mb: 4,
-                  maxWidth: "800px",
-                  margin: "0 auto",
-                  letterSpacing: "1px",
-                }}
-              >
-                {teamMember.description}
-              </Typography>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+                <ColorBars />
+              </Box>
+            </motion.div>
+          </motion.div>
 
-              <Box sx={{ mt: 6 }}>
+          <Grid container spacing={6} justifyContent="center">
+            <Grid item xs={12}>
+              <TeamMemberCard
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                <Box
+                  component="img"
+                  src={teamMember.image}
+                  alt={teamMember.name}
+                  sx={{
+                    width: 300,
+                    height: 300,
+                    objectFit: "cover",
+                    marginBottom: 4,
+                    border: "3px solid #a70a0c",
+                    borderRadius: "50%",
+                  }}
+                />
                 <Typography
                   sx={{
                     fontFamily: "'Times New Roman', serif",
-                    mb: 3,
+                    fontWeight: 600,
+                    mb: 2,
                     color: "#000",
-                    fontSize: "1.5rem",
+                    fontSize: "2rem",
                     letterSpacing: "2px",
                   }}
                 >
-                  AREAS OF EXPERTISE
+                  {teamMember.name}
                 </Typography>
-                <Grid container spacing={2} justifyContent="center">
-                  {teamMember.expertise.map((skill, index) => (
-                    <Grid item xs={12} sm={6} md={3} key={index}>
-                      <Box
-                        sx={{
-                          backgroundColor: "#f5f5f5",
-                          padding: "1rem",
-                          fontFamily: "'Montserrat', sans-serif",
-                          color: "#5f5f5f",
-                          letterSpacing: "1px",
-                        }}
-                      >
-                        {skill}
-                      </Box>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            </TeamMemberCard>
+                <Typography
+                  sx={{
+                    color: "#a70a0c",
+                    fontFamily: "'Montserrat', sans-serif",
+                    mb: 4,
+                    fontWeight: 500,
+                    letterSpacing: "1.5px",
+                  }}
+                >
+                  {teamMember.position}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    color: "#5f5f5f",
+                    lineHeight: 1.8,
+                    fontSize: "1rem",
+                    mb: 4,
+                    maxWidth: "800px",
+                    margin: "0 auto",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  {teamMember.description}
+                </Typography>
+
+                <Box sx={{ mt: 6 }}>
+                  <Typography
+                    sx={{
+                      fontFamily: "'Times New Roman', serif",
+                      mb: 3,
+                      color: "#000",
+                      fontSize: "1.5rem",
+                      letterSpacing: "2px",
+                    }}
+                  >
+                    AREAS OF EXPERTISE
+                  </Typography>
+                  <Grid container spacing={2} justifyContent="center">
+                    {teamMember.expertise.map((skill, index) => (
+                      <Grid item xs={12} sm={6} md={3} key={index}>
+                        <Box
+                          sx={{
+                            backgroundColor: "#f5f5f5",
+                            padding: "1rem",
+                            fontFamily: "'Montserrat', sans-serif",
+                            color: "#5f5f5f",
+                            letterSpacing: "1px",
+                          }}
+                        >
+                          {skill}
+                        </Box>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              </TeamMemberCard>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-    </Box>
+        </Container>
+      </Box>
+    </>
   );
 };
 

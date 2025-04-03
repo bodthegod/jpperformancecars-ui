@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://www.jpperformancecars.co.uk/</loc>
+    <video:video>
+      <video:thumbnail_loc>https://www.jpperformancecars.co.uk/video-thumbnail.jpg</video:thumbnail_loc>
+      <video:title>JP Performance Cars Supercar Servicing</video:title>
+      <video:description>Showcase of luxury and supercar servicing at JP Performance Cars</video:description>
+      <video:content_loc>https://www.jpperformancecars.co.uk/static/media/HeroVideo.mp4</video:content_loc>
+      <video:duration>60</video:duration>
+      <video:publication_date>2025-04-03T12:21:13.940Z</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:live>no</video:live>
+    </video:video>
+  </url>
+</urlset>
