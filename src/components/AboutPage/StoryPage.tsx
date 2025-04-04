@@ -246,6 +246,13 @@ const StoryPage: React.FC = () => {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "JP Performance Cars",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5",
+      reviewCount: testimonials.length.toString(),
+      bestRating: "5",
+      worstRating: "1",
+    },
     review: testimonials.map((testimonial) => ({
       "@type": "Review",
       author: {
