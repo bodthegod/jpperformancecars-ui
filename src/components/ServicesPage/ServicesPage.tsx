@@ -144,7 +144,7 @@ const ServicesPage: React.FC = () => {
       <SEO
         title="Supercar Services & Repairs | JP Performance Cars | Supercar Specialists"
         description="Expert supercar maintenance for Ferrari, Lamborghini, McLaren, Porsche and luxury vehicles in Staffordshire. Timing belt service, diagnostics, and specialist repairs."
-        keywords="Ferrari servicing Staffordshire, Lamborghini repair specialist, McLaren maintenance Burntwood, Porsche service Midlands, supercar diagnostics, timing belt replacement"
+        keywords="Ferrari servicing Staffordshire, Midlands, Lamborghini repair specialist, McLaren maintenance Burntwood, Porsche service Midlands, supercar diagnostics, timing belt replacement"
         canonical="https://www.jpperformancecars.co.uk/services"
         structuredData={serviceSchema}
       />

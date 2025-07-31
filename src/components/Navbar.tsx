@@ -12,6 +12,7 @@ import {
   useMediaQuery,
   Menu,
   MenuItem,
+  Badge,
 } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -19,9 +20,12 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import jpLogo from "../assets/images/JPLogo.png";
+import { useCart } from "../contexts/CartContext";
+import CartDrawer from "./Cart/CartDrawer";
 
 const MotionIcon = motion.div;
 const MotionStack = motion.create(Stack as any);
@@ -101,11 +105,21 @@ const navItems = [
     link: "/services",
   },
   {
+    label: "DIAGNOSTIC",
+    dropdownItems: [],
+    link: "/diagnostic",
+  },
+  {
     label: "ABOUT",
     dropdownItems: [
       { label: "Our Story", link: "/about/story" },
       { label: "Team", link: "/about/team" },
     ],
+  },
+  {
+    label: "BLOG",
+    dropdownItems: [],
+    link: "/blog",
   },
   {
     label: "CONTACT",
@@ -116,8 +130,10 @@ const navItems = [
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const { state } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("lg")
   );
@@ -240,30 +256,47 @@ const Navbar: React.FC = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 1,
+                  gap: 2,
                 }}
                 animate={isScrolled ? "scrolled" : "initial"}
                 variants={topElementsVariants}
               >
-                <PhoneIcon
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <PhoneIcon
+                    sx={{
+                      "@media (max-width: 1024px)": {
+                        fontSize: "1rem",
+                      },
+                    }}
+                  />
+                  <Typography
+                    sx={{
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontWeight: 700,
+                      letterSpacing: "0.5px",
+                      "@media (max-width: 1024px)": {
+                        fontSize: "0.7rem",
+                      },
+                    }}
+                  >
+                    +44 (0)7391 710867
+                  </Typography>
+                </Box>
+
+                {/* Cart Icon */}
+                <IconButton
+                  onClick={() => setCartOpen(true)}
                   sx={{
-                    "@media (max-width: 1024px)": {
-                      fontSize: "1rem",
-                    },
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontWeight: 700,
-                    letterSpacing: "0.5px",
-                    "@media (max-width: 1024px)": {
-                      fontSize: "0.7rem",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
                     },
                   }}
                 >
-                  +44 (0)7391 710867
-                </Typography>
+                  <Badge badgeContent={state.itemCount} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
               </MotionBox>
             )}
           </Box>
@@ -367,17 +400,36 @@ const Navbar: React.FC = () => {
 
       {isMobile && (
         <>
-          <IconButton
+          <Box
             sx={{
-              color: "white",
               position: "absolute",
               right: 20,
               top: 20,
+              display: "flex",
+              gap: 1,
             }}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <MenuIcon />
-          </IconButton>
+            {/* Cart Icon for Mobile */}
+            <IconButton
+              sx={{
+                color: "white",
+              }}
+              onClick={() => setCartOpen(true)}
+            >
+              <Badge badgeContent={state.itemCount} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+
+            <IconButton
+              sx={{
+                color: "white",
+              }}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
 
           <Drawer
             anchor="right"
@@ -521,6 +573,9 @@ const Navbar: React.FC = () => {
         <Box sx={{ flex: 1, backgroundColor: "#e8e8e8" }} />
         <Box sx={{ flex: 1, backgroundColor: "#a70a0c" }} />
       </Box>
+
+      {/* Cart Drawer */}
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </AppBar>
   );
 };

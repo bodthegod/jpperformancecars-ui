@@ -19,10 +19,6 @@ import emailjs from "@emailjs/browser";
 import SEO from "./SEO";
 
 const ContactPage: React.FC = () => {
-  useEffect(() => {
-    emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY!);
-  }, []);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",

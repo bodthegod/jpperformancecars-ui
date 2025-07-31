@@ -185,9 +185,6 @@ const FormField = styled(Box)(({ theme }) => ({
 }));
 
 const ServiceForm: React.FC = () => {
-  useEffect(() => {
-    emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY!);
-  }, []);
   const [formData, setFormData] = useState({
     vehicle: "",
     name: "",
