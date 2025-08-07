@@ -21,11 +21,18 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../../contexts/CartContext";
 import { ColorBars } from "../elements/ColorBars";
 import SEO from "../SEO";
+import StripePaymentForm from "./StripePaymentForm";
+import { ordersApi } from "../../lib/supabase";
+import { formatCurrency } from "../../lib/stripe";
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { state, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentStep, setPaymentStep] = useState<"shipping" | "payment">(
+    "shipping"
+  );
+  const [orderComplete, setOrderComplete] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -44,36 +51,95 @@ const CheckoutPage: React.FC = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleShippingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (state.items.length === 0) {
+    // Validate shipping form
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "phone",
+      "address",
+      "city",
+      "postalCode",
+    ];
+    const missingFields = requiredFields.filter(
+      (field) => !formData[field as keyof typeof formData]
+    );
+
+    if (missingFields.length > 0) {
+      alert(`Please fill in all required fields: ${missingFields.join(", ")}`);
       return;
     }
 
+    // Move to payment step
+    setPaymentStep("payment");
+  };
+
+  const handlePaymentSuccess = async (paymentIntent: any) => {
     setIsProcessing(true);
 
     try {
-      // Here you would integrate with Stripe and create the order
-      // For now, we'll just simulate the process
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Create order in database (matching existing schema)
+      const orderData = {
+        email: formData.email,
+        total: state.total,
+        status: "paid", // Changed from "completed" to match existing schema
+        shipping_info: {
+          customerName: `${formData.firstName} ${formData.lastName}`,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          postalCode: formData.postalCode,
+          country: formData.country,
+          currency: "GBP",
+          paymentIntentId: paymentIntent.id,
+        },
+      };
 
-      // Clear cart after successful order
+      const order = await ordersApi.create(orderData);
+
+      // Create order items
+      const orderItems = state.items.map((item) => ({
+        order_id: order.id,
+        part_id: item.part.id,
+        quantity: item.quantity,
+        price: item.part.price,
+      }));
+
+      await ordersApi.createItems(orderItems);
+
+      // Clear cart and show success
       clearCart();
-
-      // Navigate to success page or show success message
-      alert("Order placed successfully! (This is a demo)");
-      navigate("/");
-    } catch (error) {
-      console.error("Checkout error:", error);
-      alert("There was an error processing your order. Please try again.");
+      setOrderComplete(true);
+    } catch (error: any) {
+      console.error("Order creation error:", error);
+      console.error("Error details:", {
+        message: error?.message,
+        details: error?.details,
+        hint: error?.hint,
+        code: error?.code,
+      });
+      alert(
+        `Payment successful, but there was an error saving your order. Please contact support. Error: ${
+          error?.message || "Unknown error"
+        }`
+      );
     } finally {
       setIsProcessing(false);
     }
   };
 
+  const handlePaymentError = (error: string) => {
+    console.error("Payment error:", error);
+    alert(`Payment failed: ${error}`);
+  };
+
   const formatPrice = (price: number) => {
-    return `£${price.toFixed(2)}`;
+    return formatCurrency(price);
   };
 
   const containerVariants = {
@@ -95,6 +161,39 @@ const CheckoutPage: React.FC = () => {
       transition: { duration: 0.5 },
     },
   };
+
+  // Order complete screen
+  if (orderComplete) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: { xs: "20%", sm: "15%", md: "10%" } }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <Alert severity="success" sx={{ mb: 4, p: 3 }}>
+            <Typography variant="h6" sx={{ mb: 1 }}>
+              Order Completed Successfully! 🎉
+            </Typography>
+            <Typography variant="body1">
+              Thank you for your purchase. Your order has been processed and
+              you'll receive a confirmation email shortly.
+            </Typography>
+          </Alert>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/")}
+            sx={{
+              backgroundColor: "#006620",
+              "&:hover": { backgroundColor: "#004d1a" },
+            }}
+          >
+            Continue Shopping
+          </Button>
+        </motion.div>
+      </Container>
+    );
+  }
 
   if (state.items.length === 0) {
     return (
@@ -241,129 +340,136 @@ const CheckoutPage: React.FC = () => {
                   <Card>
                     <CardContent>
                       <Typography variant="h6" sx={{ mb: 3 }}>
-                        Shipping Information
+                        {paymentStep === "shipping"
+                          ? "Shipping Information"
+                          : "Payment"}
                       </Typography>
 
-                      <Box component="form" onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} sm={6}>
-                            <TextField
-                              fullWidth
-                              name="firstName"
-                              label="First Name"
-                              value={formData.firstName}
-                              onChange={handleInputChange}
-                              required
-                            />
+                      {paymentStep === "shipping" ? (
+                        <Box component="form" onSubmit={handleShippingSubmit}>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                              <TextField
+                                fullWidth
+                                name="firstName"
+                                label="First Name"
+                                value={formData.firstName}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                              <TextField
+                                fullWidth
+                                name="lastName"
+                                label="Last Name"
+                                value={formData.lastName}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                              <TextField
+                                fullWidth
+                                name="email"
+                                label="Email"
+                                type="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                              <TextField
+                                fullWidth
+                                name="phone"
+                                label="Phone"
+                                value={formData.phone}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                fullWidth
+                                name="address"
+                                label="Address"
+                                value={formData.address}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                              <TextField
+                                fullWidth
+                                name="city"
+                                label="City"
+                                value={formData.city}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                              <TextField
+                                fullWidth
+                                name="postalCode"
+                                label="Postal Code"
+                                value={formData.postalCode}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                fullWidth
+                                name="country"
+                                label="Country"
+                                value={formData.country}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </Grid>
                           </Grid>
-                          <Grid item xs={12} sm={6}>
-                            <TextField
-                              fullWidth
-                              name="lastName"
-                              label="Last Name"
-                              value={formData.lastName}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </Grid>
-                          <Grid item xs={12} sm={6}>
-                            <TextField
-                              fullWidth
-                              name="email"
-                              label="Email"
-                              type="email"
-                              value={formData.email}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </Grid>
-                          <Grid item xs={12} sm={6}>
-                            <TextField
-                              fullWidth
-                              name="phone"
-                              label="Phone"
-                              value={formData.phone}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </Grid>
-                          <Grid item xs={12}>
-                            <TextField
-                              fullWidth
-                              name="address"
-                              label="Address"
-                              value={formData.address}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </Grid>
-                          <Grid item xs={12} sm={6}>
-                            <TextField
-                              fullWidth
-                              name="city"
-                              label="City"
-                              value={formData.city}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </Grid>
-                          <Grid item xs={12} sm={6}>
-                            <TextField
-                              fullWidth
-                              name="postalCode"
-                              label="Postal Code"
-                              value={formData.postalCode}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </Grid>
-                          <Grid item xs={12}>
-                            <TextField
-                              fullWidth
-                              name="country"
-                              label="Country"
-                              value={formData.country}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </Grid>
-                        </Grid>
 
-                        <Box sx={{ mt: 4 }}>
-                          <Alert severity="info" sx={{ mb: 2 }}>
-                            This is a demo checkout. In a real implementation,
-                            you would integrate with Stripe for secure payment
-                            processing.
-                          </Alert>
-
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            size="large"
-                            fullWidth
-                            disabled={isProcessing}
-                            sx={{
-                              backgroundColor: "#006620",
-                              "&:hover": {
-                                backgroundColor: "#004d1a",
-                              },
-                              py: 1.5,
-                            }}
-                          >
-                            {isProcessing ? (
-                              <>
-                                <CircularProgress
-                                  size={20}
-                                  sx={{ mr: 1, color: "white" }}
-                                />
-                                Processing...
-                              </>
-                            ) : (
-                              `Complete Order - ${formatPrice(state.total)}`
-                            )}
-                          </Button>
+                          <Box sx={{ mt: 4 }}>
+                            <Button
+                              type="submit"
+                              variant="contained"
+                              size="large"
+                              fullWidth
+                              sx={{
+                                backgroundColor: "#006620",
+                                "&:hover": {
+                                  backgroundColor: "#004d1a",
+                                },
+                                py: 1.5,
+                              }}
+                            >
+                              Continue to Payment
+                            </Button>
+                          </Box>
                         </Box>
-                      </Box>
+                      ) : (
+                        <Box>
+                          {/* Back to shipping button */}
+                          <Button
+                            startIcon={<ArrowBack />}
+                            onClick={() => setPaymentStep("shipping")}
+                            variant="text"
+                            sx={{ mb: 3 }}
+                          >
+                            Back to Shipping
+                          </Button>
+
+                          {/* Stripe Payment Form */}
+                          <StripePaymentForm
+                            amount={state.total}
+                            onSuccess={handlePaymentSuccess}
+                            onError={handlePaymentError}
+                            disabled={isProcessing}
+                          />
+                        </Box>
+                      )}
                     </CardContent>
                   </Card>
                 </motion.div>

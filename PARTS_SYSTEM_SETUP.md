@@ -15,8 +15,12 @@ Create a `.env` file in the root directory with the following variables:
 REACT_APP_SUPABASE_URL=your_supabase_url_here
 REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 
-# Stripe Configuration (for future use)
-REACT_APP_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key_here
+# Stripe Configuration (REQUIRED for payments)
+REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_your_actual_stripe_key_here
+
+# IMPORTANT: Get your Stripe keys from: https://dashboard.stripe.com/apikeys
+# Use the "Publishable key" (starts with pk_test_ for testing)
+# Example: pk_test_51abc123def456ghi789jkl012mnop345qrs678tuv901wxy234zab567cde890fgh123ijk456
 
 # EmailJS Configuration (existing)
 REACT_APP_EMAILJS_SERVICE_ID=your_emailjs_service_id
@@ -128,10 +132,13 @@ CREATE TABLE solution_parts (
 -- Orders Table
 CREATE TABLE orders (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  email VARCHAR(255) NOT NULL,
-  total DECIMAL(10,2) NOT NULL,
-  status VARCHAR(20) CHECK (status IN ('pending', 'paid', 'shipped', 'delivered')) DEFAULT 'pending',
-  shipping_info JSONB NOT NULL,
+  customer_email VARCHAR(255) NOT NULL,
+  customer_name VARCHAR(255) NOT NULL,
+  total_amount DECIMAL(10,2) NOT NULL,
+  currency VARCHAR(3) DEFAULT 'GBP',
+  payment_intent_id VARCHAR(255),
+  status VARCHAR(20) CHECK (status IN ('pending', 'completed', 'shipped', 'delivered', 'cancelled')) DEFAULT 'pending',
+  shipping_address JSONB NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

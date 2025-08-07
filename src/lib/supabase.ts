@@ -359,3 +359,72 @@ export const adminApi = {
     return data;
   },
 };
+
+// User Submissions API
+export const userSubmissionsApi = {
+  // Create a new user submission
+  create: async (submission: any) => {
+    const { data, error } = await supabase
+      .from("user_obd_submissions")
+      .insert(submission)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  // Get all submissions (for admin)
+  getAll: async () => {
+    const { data, error } = await supabase
+      .from("user_obd_submissions")
+      .select("*")
+      .order("submitted_at", { ascending: false });
+    if (error) throw error;
+    return data;
+  },
+
+  // Get pending submissions only
+  getPending: async () => {
+    const { data, error } = await supabase
+      .from("user_obd_submissions")
+      .select("*")
+      .eq("status", "pending")
+      .order("submitted_at", { ascending: false });
+    if (error) throw error;
+    return data;
+  },
+
+  // Update submission status (for admin review)
+  updateStatus: async (
+    id: string,
+    status: string,
+    reviewNotes?: string,
+    reviewedBy?: string
+  ) => {
+    const updates: any = {
+      status,
+      reviewed_at: new Date().toISOString(),
+    };
+
+    if (reviewNotes) updates.review_notes = reviewNotes;
+    if (reviewedBy) updates.reviewed_by = reviewedBy;
+
+    const { data, error } = await supabase
+      .from("user_obd_submissions")
+      .update(updates)
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  // Delete a submission
+  delete: async (id: string) => {
+    const { error } = await supabase
+      .from("user_obd_submissions")
+      .delete()
+      .eq("id", id);
+    if (error) throw error;
+  },
+};

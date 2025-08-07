@@ -33,6 +33,8 @@ import { OBDCode, VehicleMake, VehicleModel, Part } from "../../types/types";
 import { ColorBars } from "../elements/ColorBars";
 import SEO from "../SEO";
 import { useCart } from "../../contexts/CartContext";
+import PageContainer from "../layout/PageContainer";
+import OBDSubmissionForm from "./OBDSubmissionForm";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -74,6 +76,9 @@ const DiagnosticLookup: React.FC = () => {
 
   // Tab management
   const [tabValue, setTabValue] = useState(0);
+
+  // OBD submission form
+  const [showSubmissionForm, setShowSubmissionForm] = useState(false);
 
   // Load recent searches from localStorage
   useEffect(() => {
@@ -217,11 +222,24 @@ const DiagnosticLookup: React.FC = () => {
 
   const diagnosticSchema = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "OBD Diagnostic Code Lookup",
+    "@type": ["WebPage", "WebApplication"],
+    name: "Ferrari OBD Diagnostic Code Lookup | Supercar Parts & Solutions",
     description:
-      "Search and find diagnostic trouble codes (DTC) for your vehicle. Get detailed information about OBD codes, common causes, and solutions.",
+      "Professional Ferrari diagnostic code lookup tool. Search OBD trouble codes, find genuine parts, and get expert repair solutions. Over 60,000 parts in stock with next-day delivery.",
     url: "https://www.jpperformancecars.co.uk/diagnostic",
+    applicationCategory: "AutomotiveApplication",
+    operatingSystem: "Web Browser",
+    offers: {
+      "@type": "Offer",
+      description: "Professional Ferrari diagnostic and parts services",
+      seller: {
+        "@type": "Organization",
+        name: "JP Performance Cars",
+        url: "https://www.jpperformancecars.co.uk",
+      },
+    },
+    keywords:
+      "Ferrari OBD codes, diagnostic trouble codes, Ferrari parts, supercar diagnostic, OBD code lookup, Ferrari repair, DTC codes",
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -235,547 +253,610 @@ const DiagnosticLookup: React.FC = () => {
   return (
     <>
       <SEO
-        title="OBD Diagnostic Code Lookup | JP Performance Cars"
-        description="Search and find diagnostic trouble codes (DTC) for your vehicle. Get detailed information about OBD codes, common causes, and solutions."
-        keywords="OBD diagnostic codes, check engine light, DTC codes, car diagnostic, engine codes, fault codes, vehicle diagnostic"
+        title="Ferrari OBD Diagnostic Code Lookup | Supercar Parts & Solutions | JP Performance Cars"
+        description="Professional Ferrari OBD code lookup & diagnostic tool. Search trouble codes, find genuine parts, and get expert repair solutions. 60,000+ parts in stock. Next-day delivery available."
+        keywords="Ferrari OBD codes, Ferrari diagnostic, supercar OBD codes, Ferrari trouble codes, OBD code lookup, Ferrari parts, diagnostic trouble codes, Ferrari repair, DTC codes, Ferrari OBD scanner, supercar diagnostic"
         canonical="https://www.jpperformancecars.co.uk/diagnostic"
         structuredData={diagnosticSchema}
       />
 
-      <Box>
-        <Container
-          maxWidth="lg"
-          sx={{ mt: { xs: "20%", sm: "15%", md: "10%" } }}
+      <PageContainer maxWidth="lg" additionalSpacing={30}>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
         >
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-          >
-            <motion.div variants={itemVariants}>
-              <Typography
-                variant="h3"
-                align="center"
-                sx={{
-                  mb: 1,
-                  fontFamily: "Times New Roman, sans-serif",
-                  padding: "2.5rem 0",
-                  fontSize: "34px",
-                  letterSpacing: "2px",
-                  lineHeight: "1.2",
-                }}
-              >
-                DIAGNOSTIC CODE LOOKUP
-              </Typography>
-            </motion.div>
+          <motion.div variants={itemVariants}>
+            <Typography
+              variant="h3"
+              align="center"
+              sx={{
+                mb: 1,
+                fontFamily: "Times New Roman, sans-serif",
+                padding: "2.5rem 0",
+                fontSize: "34px",
+                letterSpacing: "2px",
+                lineHeight: "1.2",
+              }}
+            >
+              DIAGNOSTIC CODE LOOKUP
+            </Typography>
+          </motion.div>
 
-            <motion.div variants={itemVariants}>
-              <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
-                <ColorBars />
-              </Box>
-            </motion.div>
+          <motion.div variants={itemVariants}>
+            <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+              <ColorBars />
+            </Box>
+          </motion.div>
 
-            <motion.div variants={itemVariants}>
+          <motion.div variants={itemVariants}>
+            <Typography
+              variant="h6"
+              align="center"
+              sx={{ mb: 2, color: "#666", maxWidth: 600, mx: "auto" }}
+            >
+              Find diagnostic codes and compatible parts for your specific
+              vehicle
+            </Typography>
+            <Box sx={{ textAlign: "center", mb: 4 }}>
               <Typography
-                variant="h6"
-                align="center"
-                sx={{ mb: 2, color: "#666", maxWidth: 600, mx: "auto" }}
-              >
-                Find diagnostic codes and compatible parts for your specific
-                vehicle
+                variant="body2"
+                color="primary"
+                sx={{ fontWeight: "bold" }}
+              ></Typography>
+              <Typography variant="body2" color="text.secondary">
+                Want to help the community? Submit a new OBD code!
               </Typography>
-              <Box sx={{ textAlign: "center", mb: 4 }}>
-                <Typography
-                  variant="body2"
-                  color="primary"
-                  sx={{ fontWeight: "bold" }}
+
+              {/* Add OBD Code Button */}
+              <Box sx={{ mt: 3 }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setShowSubmissionForm(true)}
+                  sx={{
+                    borderColor: "#006620",
+                    color: "#006620",
+                    "&:hover": {
+                      backgroundColor: "#f5f5f5",
+                      borderColor: "#004d1a",
+                    },
+                    px: 3,
+                    py: 1,
+                  }}
                 >
-                  Over 60,000 lines of genuine new & used parts in stock
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Next day delivery available to over 100 countries
-                </Typography>
+                  🚀 Submit New OBD Code
+                </Button>
+                <Typography
+                  variant="caption"
+                  display="block"
+                  sx={{ mt: 1, opacity: 0.8 }}
+                ></Typography>
               </Box>
-            </motion.div>
+            </Box>
+          </motion.div>
 
-            {/* Search Tabs */}
+          {/* Search Tabs */}
+          <motion.div variants={itemVariants}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
+              <Tabs value={tabValue} onChange={handleTabChange} centered>
+                <Tab
+                  icon={<DirectionsCar />}
+                  label="OBD Code Search"
+                  iconPosition="start"
+                />
+                <Tab
+                  icon={<Build />}
+                  label="Vehicle Parts"
+                  iconPosition="start"
+                />
+              </Tabs>
+            </Box>
+          </motion.div>
+
+          {/* OBD Code Search Tab */}
+          <TabPanel value={tabValue} index={0}>
             <motion.div variants={itemVariants}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
-                <Tabs value={tabValue} onChange={handleTabChange} centered>
-                  <Tab
-                    icon={<DirectionsCar />}
-                    label="OBD Code Search"
-                    iconPosition="start"
-                  />
-                  <Tab
-                    icon={<Build />}
-                    label="Vehicle Parts"
-                    iconPosition="start"
-                  />
-                </Tabs>
+              <Box component="form" onSubmit={handleSubmit} sx={{ mb: 6 }}>
+                <Grid container spacing={2} justifyContent="center">
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      fullWidth
+                      value={searchQuery}
+                      onChange={(e) =>
+                        setSearchQuery(e.target.value.toUpperCase())
+                      }
+                      placeholder="Enter OBD Code (e.g., P0123)"
+                      variant="outlined"
+                      size="medium"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <DirectionsCar />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            {isLoading && <CircularProgress size={20} />}
+                          </InputAdornment>
+                        ),
+                      }}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                          fontSize: "1.1rem",
+                        },
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      size="large"
+                      disabled={isLoading || !searchQuery.trim()}
+                      startIcon={<Search />}
+                      sx={{
+                        borderRadius: 2,
+                        px: 4,
+                        py: 1.5,
+                        fontSize: "1.1rem",
+                        backgroundColor: "#006620",
+                        "&:hover": {
+                          backgroundColor: "#004d1a",
+                        },
+                      }}
+                    >
+                      {isLoading ? "Searching..." : "Search"}
+                    </Button>
+                  </Grid>
+                </Grid>
               </Box>
             </motion.div>
 
-            {/* OBD Code Search Tab */}
-            <TabPanel value={tabValue} index={0}>
+            {/* Recent Searches */}
+            {recentSearches.length > 0 && (
               <motion.div variants={itemVariants}>
-                <Box component="form" onSubmit={handleSubmit} sx={{ mb: 6 }}>
-                  <Grid container spacing={2} justifyContent="center">
-                    <Grid item xs={12} md={6}>
-                      <TextField
-                        fullWidth
-                        value={searchQuery}
-                        onChange={(e) =>
-                          setSearchQuery(e.target.value.toUpperCase())
-                        }
-                        placeholder="Enter OBD Code (e.g., P0123)"
+                <Box sx={{ mb: 4 }}>
+                  <Typography variant="h6" sx={{ mb: 2 }}>
+                    Recent Searches:
+                  </Typography>
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                    {recentSearches.map((search, index) => (
+                      <Chip
+                        key={index}
+                        label={search}
+                        onClick={() => {
+                          setSearchQuery(search);
+                          handleSearch(search);
+                        }}
                         variant="outlined"
-                        size="medium"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <DirectionsCar />
-                            </InputAdornment>
-                          ),
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              {isLoading && <CircularProgress size={20} />}
-                            </InputAdornment>
-                          ),
-                        }}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            borderRadius: 2,
-                            fontSize: "1.1rem",
-                          },
-                        }}
+                        sx={{ cursor: "pointer" }}
                       />
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        size="large"
-                        disabled={isLoading || !searchQuery.trim()}
-                        startIcon={<Search />}
-                        sx={{
-                          borderRadius: 2,
-                          px: 4,
-                          py: 1.5,
-                          fontSize: "1.1rem",
-                          backgroundColor: "#006620",
-                          "&:hover": {
-                            backgroundColor: "#004d1a",
-                          },
-                        }}
-                      >
-                        {isLoading ? "Searching..." : "Search"}
-                      </Button>
-                    </Grid>
-                  </Grid>
+                    ))}
+                  </Box>
                 </Box>
               </motion.div>
+            )}
 
-              {/* Recent Searches */}
-              {recentSearches.length > 0 && (
-                <motion.div variants={itemVariants}>
-                  <Box sx={{ mb: 4 }}>
-                    <Typography variant="h6" sx={{ mb: 2 }}>
-                      Recent Searches:
-                    </Typography>
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                      {recentSearches.map((search, index) => (
-                        <Chip
-                          key={index}
-                          label={search}
-                          onClick={() => {
-                            setSearchQuery(search);
-                            handleSearch(search);
-                          }}
-                          variant="outlined"
-                          sx={{ cursor: "pointer" }}
-                        />
+            {error && (
+              <motion.div variants={itemVariants}>
+                <Alert severity="error" sx={{ mb: 4 }}>
+                  {error}
+                </Alert>
+              </motion.div>
+            )}
+
+            {/* Search Results */}
+            {searchResults.length > 0 && (
+              <motion.div variants={itemVariants}>
+                <Typography variant="h5" sx={{ mb: 3 }}>
+                  Search Results ({searchResults.length})
+                </Typography>
+                <Grid container spacing={3}>
+                  {searchResults.map((code) => (
+                    <Grid item xs={12} md={6} key={code.id}>
+                      <Card
+                        component={motion.div}
+                        whileHover={{ y: -5 }}
+                        sx={{
+                          height: "100%",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                          "&:hover": {
+                            boxShadow: 4,
+                          },
+                        }}
+                        onClick={() => {
+                          window.location.href = `/diagnostic/${code.code.toLowerCase()}`;
+                        }}
+                      >
+                        <CardContent>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "flex-start",
+                              mb: 2,
+                            }}
+                          >
+                            <Typography variant="h5" fontWeight="bold">
+                              {code.code}
+                            </Typography>
+                            <Chip
+                              label={code.severity.toUpperCase()}
+                              color={getSeverityColor(code.severity)}
+                              size="small"
+                            />
+                          </Box>
+                          <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            sx={{ mb: 2 }}
+                          >
+                            {code.description}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Click to view detailed solutions and parts
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </motion.div>
+            )}
+          </TabPanel>
+
+          {/* Vehicle Parts Tab */}
+          <TabPanel value={tabValue} index={1}>
+            <motion.div variants={itemVariants}>
+              <Box sx={{ textAlign: "center", mb: 4 }}>
+                <Typography variant="h5" sx={{ mb: 1, fontWeight: "bold" }}>
+                  SELECT YOUR VEHICLE
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Browse our automotive parts catalog
+                </Typography>
+              </Box>
+
+              <Grid container spacing={3} justifyContent="center">
+                <Grid item xs={12} sm={4}>
+                  <FormControl fullWidth>
+                    <InputLabel>Make</InputLabel>
+                    <Select
+                      value={selectedMake}
+                      label="Make"
+                      onChange={(e) => setSelectedMake(e.target.value)}
+                    >
+                      {makes.map((make) => (
+                        <MenuItem key={make.id} value={make.id}>
+                          {make.name}
+                        </MenuItem>
                       ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={4}>
+                  <FormControl fullWidth disabled={!selectedMake}>
+                    <InputLabel>Model</InputLabel>
+                    <Select
+                      value={selectedModel}
+                      label="Model"
+                      onChange={(e) => setSelectedModel(e.target.value)}
+                    >
+                      {models.map((model) => (
+                        <MenuItem key={model.id} value={model.name}>
+                          {model.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={4}>
+                  <FormControl fullWidth disabled={!selectedModel}>
+                    <InputLabel>Year</InputLabel>
+                    <Select
+                      value={selectedYear}
+                      label="Year"
+                      onChange={(e) =>
+                        setSelectedYear(e.target.value as number)
+                      }
+                    >
+                      {selectedModel &&
+                        models
+                          .find((m) => m.name === selectedModel)
+                          ?.years.map((year) => (
+                            <MenuItem key={year} value={year}>
+                              {year}
+                            </MenuItem>
+                          ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              {vehicleParts.length > 0 && (
+                <motion.div variants={itemVariants}>
+                  <Box sx={{ mt: 4 }}>
+                    <Box sx={{ textAlign: "center", mb: 4 }}>
+                      <Typography
+                        variant="h4"
+                        sx={{ mb: 1, fontWeight: "bold" }}
+                      >
+                        AUTOMOTIVE PARTS CATALOG
+                      </Typography>
+                      <Typography variant="h6" color="primary">
+                        {vehicleParts.length} Parts Available • Professional
+                        Quality Parts
+                      </Typography>
                     </Box>
+
+                    <Grid container spacing={3}>
+                      {vehicleParts.map((part) => (
+                        <Grid item xs={12} sm={6} md={4} key={part.id}>
+                          <motion.div
+                            whileHover={{
+                              y: -8,
+                              boxShadow: "0px 8px 25px rgba(0,0,0,0.15)",
+                            }}
+                            style={{ height: "100%" }}
+                          >
+                            <Card
+                              sx={{
+                                height: "100%",
+                                transition: "all 0.3s ease",
+                                border:
+                                  part.availability === "in_stock"
+                                    ? "2px solid #4caf50"
+                                    : "1px solid #e0e0e0",
+                                position: "relative",
+                                overflow: "visible",
+                              }}
+                            >
+                              {/* Stock Badge */}
+                              {part.availability === "in_stock" && (
+                                <Box
+                                  sx={{
+                                    position: "absolute",
+                                    top: -8,
+                                    right: 16,
+                                    backgroundColor: "#4caf50",
+                                    color: "white",
+                                    px: 2,
+                                    py: 0.5,
+                                    borderRadius: 2,
+                                    fontSize: "0.75rem",
+                                    fontWeight: "bold",
+                                    zIndex: 1,
+                                  }}
+                                >
+                                  ✓ IN STOCK
+                                </Box>
+                              )}
+
+                              <CardContent>
+                                <Typography
+                                  variant="h6"
+                                  sx={{
+                                    mb: 1,
+                                    fontWeight: "bold",
+                                    minHeight: 48,
+                                  }}
+                                >
+                                  {part.name}
+                                </Typography>
+
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    mb: 1,
+                                  }}
+                                >
+                                  <Typography
+                                    variant="body2"
+                                    color="primary"
+                                    fontWeight="bold"
+                                  >
+                                    {part.brand}
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{ mx: 1 }}
+                                  >
+                                    •
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    {part.category}
+                                  </Typography>
+                                </Box>
+
+                                {part.part_number && (
+                                  <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                    sx={{ display: "block", mb: 1 }}
+                                  >
+                                    Part #: {part.part_number}
+                                  </Typography>
+                                )}
+
+                                <Typography
+                                  variant="body2"
+                                  sx={{ mb: 2, minHeight: 40 }}
+                                >
+                                  {part.description}
+                                </Typography>
+
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    mb: 2,
+                                  }}
+                                >
+                                  <Box>
+                                    <Typography
+                                      variant="h5"
+                                      color="primary"
+                                      fontWeight="bold"
+                                    >
+                                      £{part.price.toFixed(2)}
+                                    </Typography>
+                                    <Typography
+                                      variant="caption"
+                                      color="text.secondary"
+                                    >
+                                      Ex. VAT
+                                    </Typography>
+                                  </Box>
+                                  <Chip
+                                    label={
+                                      part.availability === "in_stock"
+                                        ? "IN STOCK"
+                                        : part.availability === "backorder"
+                                        ? "BACKORDER"
+                                        : "OUT OF STOCK"
+                                    }
+                                    color={
+                                      part.availability === "in_stock"
+                                        ? "success"
+                                        : part.availability === "backorder"
+                                        ? "warning"
+                                        : "error"
+                                    }
+                                    size="small"
+                                    sx={{ fontWeight: "bold" }}
+                                  />
+                                </Box>
+
+                                {/* Delivery Info */}
+                                {part.availability === "in_stock" && (
+                                  <Box
+                                    sx={{
+                                      backgroundColor: "#e8f5e8",
+                                      p: 1,
+                                      borderRadius: 1,
+                                      mb: 2,
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="caption"
+                                      color="success.dark"
+                                      sx={{ fontWeight: "bold" }}
+                                    >
+                                      🚚 Next Day Delivery Available
+                                    </Typography>
+                                  </Box>
+                                )}
+
+                                <Button
+                                  fullWidth
+                                  variant="contained"
+                                  size="large"
+                                  startIcon={<ShoppingCart />}
+                                  onClick={() => handleAddToCart(part)}
+                                  disabled={
+                                    part.availability === "out_of_stock"
+                                  }
+                                  sx={{
+                                    backgroundColor:
+                                      part.availability === "in_stock"
+                                        ? "#006620"
+                                        : "#ff9800",
+                                    "&:hover": {
+                                      backgroundColor:
+                                        part.availability === "in_stock"
+                                          ? "#004d1a"
+                                          : "#f57c00",
+                                    },
+                                    fontWeight: "bold",
+                                    py: 1.5,
+                                  }}
+                                >
+                                  {part.availability === "in_stock"
+                                    ? "ADD TO BASKET"
+                                    : part.availability === "backorder"
+                                    ? "ORDER (3-5 DAYS)"
+                                    : "OUT OF STOCK"}
+                                </Button>
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+                        </Grid>
+                      ))}
+                    </Grid>
                   </Box>
                 </motion.div>
               )}
 
-              {error && (
-                <motion.div variants={itemVariants}>
-                  <Alert severity="error" sx={{ mb: 4 }}>
-                    {error}
-                  </Alert>
-                </motion.div>
-              )}
-
-              {/* Search Results */}
-              {searchResults.length > 0 && (
-                <motion.div variants={itemVariants}>
-                  <Typography variant="h5" sx={{ mb: 3 }}>
-                    Search Results ({searchResults.length})
-                  </Typography>
-                  <Grid container spacing={3}>
-                    {searchResults.map((code) => (
-                      <Grid item xs={12} md={6} key={code.id}>
-                        <Card
-                          component={motion.div}
-                          whileHover={{ y: -5 }}
-                          sx={{
-                            height: "100%",
-                            cursor: "pointer",
-                            transition: "all 0.3s ease",
-                            "&:hover": {
-                              boxShadow: 4,
-                            },
-                          }}
-                          onClick={() => {
-                            window.location.href = `/diagnostic/${code.code.toLowerCase()}`;
-                          }}
-                        >
-                          <CardContent>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "flex-start",
-                                mb: 2,
-                              }}
-                            >
-                              <Typography variant="h5" fontWeight="bold">
-                                {code.code}
-                              </Typography>
-                              <Chip
-                                label={code.severity.toUpperCase()}
-                                color={getSeverityColor(code.severity)}
-                                size="small"
-                              />
-                            </Box>
-                            <Typography
-                              variant="body1"
-                              color="text.secondary"
-                              sx={{ mb: 2 }}
-                            >
-                              {code.description}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Click to view detailed solutions and parts
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </motion.div>
-              )}
-            </TabPanel>
-
-            {/* Vehicle Parts Tab */}
-            <TabPanel value={tabValue} index={1}>
-              <motion.div variants={itemVariants}>
-                <Box sx={{ textAlign: "center", mb: 4 }}>
-                  <Typography variant="h5" sx={{ mb: 1, fontWeight: "bold" }}>
-                    SELECT YOUR VEHICLE
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Browse our automotive parts catalog
-                  </Typography>
-                </Box>
-
-                <Grid container spacing={3} justifyContent="center">
-                  <Grid item xs={12} sm={4}>
-                    <FormControl fullWidth>
-                      <InputLabel>Make</InputLabel>
-                      <Select
-                        value={selectedMake}
-                        label="Make"
-                        onChange={(e) => setSelectedMake(e.target.value)}
-                      >
-                        {makes.map((make) => (
-                          <MenuItem key={make.id} value={make.id}>
-                            {make.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={12} sm={4}>
-                    <FormControl fullWidth disabled={!selectedMake}>
-                      <InputLabel>Model</InputLabel>
-                      <Select
-                        value={selectedModel}
-                        label="Model"
-                        onChange={(e) => setSelectedModel(e.target.value)}
-                      >
-                        {models.map((model) => (
-                          <MenuItem key={model.id} value={model.name}>
-                            {model.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={12} sm={4}>
-                    <FormControl fullWidth disabled={!selectedModel}>
-                      <InputLabel>Year</InputLabel>
-                      <Select
-                        value={selectedYear}
-                        label="Year"
-                        onChange={(e) =>
-                          setSelectedYear(e.target.value as number)
-                        }
-                      >
-                        {selectedModel &&
-                          models
-                            .find((m) => m.name === selectedModel)
-                            ?.years.map((year) => (
-                              <MenuItem key={year} value={year}>
-                                {year}
-                              </MenuItem>
-                            ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-
-                {vehicleParts.length > 0 && (
+              {selectedMake &&
+                selectedModel &&
+                selectedYear &&
+                vehicleParts.length === 0 && (
                   <motion.div variants={itemVariants}>
-                    <Box sx={{ mt: 4 }}>
-                      <Box sx={{ textAlign: "center", mb: 4 }}>
-                        <Typography
-                          variant="h4"
-                          sx={{ mb: 1, fontWeight: "bold" }}
-                        >
-                          AUTOMOTIVE PARTS CATALOG
-                        </Typography>
-                        <Typography variant="h6" color="primary">
-                          {vehicleParts.length} Parts Available • Professional
-                          Quality Parts
-                        </Typography>
-                      </Box>
-
-                      <Grid container spacing={3}>
-                        {vehicleParts.map((part) => (
-                          <Grid item xs={12} sm={6} md={4} key={part.id}>
-                            <motion.div
-                              whileHover={{
-                                y: -8,
-                                boxShadow: "0px 8px 25px rgba(0,0,0,0.15)",
-                              }}
-                              style={{ height: "100%" }}
-                            >
-                              <Card
-                                sx={{
-                                  height: "100%",
-                                  transition: "all 0.3s ease",
-                                  border:
-                                    part.availability === "in_stock"
-                                      ? "2px solid #4caf50"
-                                      : "1px solid #e0e0e0",
-                                  position: "relative",
-                                  overflow: "visible",
-                                }}
-                              >
-                                {/* Stock Badge */}
-                                {part.availability === "in_stock" && (
-                                  <Box
-                                    sx={{
-                                      position: "absolute",
-                                      top: -8,
-                                      right: 16,
-                                      backgroundColor: "#4caf50",
-                                      color: "white",
-                                      px: 2,
-                                      py: 0.5,
-                                      borderRadius: 2,
-                                      fontSize: "0.75rem",
-                                      fontWeight: "bold",
-                                      zIndex: 1,
-                                    }}
-                                  >
-                                    ✓ IN STOCK
-                                  </Box>
-                                )}
-
-                                <CardContent>
-                                  <Typography
-                                    variant="h6"
-                                    sx={{
-                                      mb: 1,
-                                      fontWeight: "bold",
-                                      minHeight: 48,
-                                    }}
-                                  >
-                                    {part.name}
-                                  </Typography>
-
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      mb: 1,
-                                    }}
-                                  >
-                                    <Typography
-                                      variant="body2"
-                                      color="primary"
-                                      fontWeight="bold"
-                                    >
-                                      {part.brand}
-                                    </Typography>
-                                    <Typography
-                                      variant="body2"
-                                      color="text.secondary"
-                                      sx={{ mx: 1 }}
-                                    >
-                                      •
-                                    </Typography>
-                                    <Typography
-                                      variant="body2"
-                                      color="text.secondary"
-                                    >
-                                      {part.category}
-                                    </Typography>
-                                  </Box>
-
-                                  {part.part_number && (
-                                    <Typography
-                                      variant="caption"
-                                      color="text.secondary"
-                                      sx={{ display: "block", mb: 1 }}
-                                    >
-                                      Part #: {part.part_number}
-                                    </Typography>
-                                  )}
-
-                                  <Typography
-                                    variant="body2"
-                                    sx={{ mb: 2, minHeight: 40 }}
-                                  >
-                                    {part.description}
-                                  </Typography>
-
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      justifyContent: "space-between",
-                                      alignItems: "center",
-                                      mb: 2,
-                                    }}
-                                  >
-                                    <Box>
-                                      <Typography
-                                        variant="h5"
-                                        color="primary"
-                                        fontWeight="bold"
-                                      >
-                                        £{part.price.toFixed(2)}
-                                      </Typography>
-                                      <Typography
-                                        variant="caption"
-                                        color="text.secondary"
-                                      >
-                                        Ex. VAT
-                                      </Typography>
-                                    </Box>
-                                    <Chip
-                                      label={
-                                        part.availability === "in_stock"
-                                          ? "IN STOCK"
-                                          : part.availability === "backorder"
-                                          ? "BACKORDER"
-                                          : "OUT OF STOCK"
-                                      }
-                                      color={
-                                        part.availability === "in_stock"
-                                          ? "success"
-                                          : part.availability === "backorder"
-                                          ? "warning"
-                                          : "error"
-                                      }
-                                      size="small"
-                                      sx={{ fontWeight: "bold" }}
-                                    />
-                                  </Box>
-
-                                  {/* Delivery Info */}
-                                  {part.availability === "in_stock" && (
-                                    <Box
-                                      sx={{
-                                        backgroundColor: "#e8f5e8",
-                                        p: 1,
-                                        borderRadius: 1,
-                                        mb: 2,
-                                      }}
-                                    >
-                                      <Typography
-                                        variant="caption"
-                                        color="success.dark"
-                                        sx={{ fontWeight: "bold" }}
-                                      >
-                                        🚚 Next Day Delivery Available
-                                      </Typography>
-                                    </Box>
-                                  )}
-
-                                  <Button
-                                    fullWidth
-                                    variant="contained"
-                                    size="large"
-                                    startIcon={<ShoppingCart />}
-                                    onClick={() => handleAddToCart(part)}
-                                    disabled={
-                                      part.availability === "out_of_stock"
-                                    }
-                                    sx={{
-                                      backgroundColor:
-                                        part.availability === "in_stock"
-                                          ? "#006620"
-                                          : "#ff9800",
-                                      "&:hover": {
-                                        backgroundColor:
-                                          part.availability === "in_stock"
-                                            ? "#004d1a"
-                                            : "#f57c00",
-                                      },
-                                      fontWeight: "bold",
-                                      py: 1.5,
-                                    }}
-                                  >
-                                    {part.availability === "in_stock"
-                                      ? "ADD TO BASKET"
-                                      : part.availability === "backorder"
-                                      ? "ORDER (3-5 DAYS)"
-                                      : "OUT OF STOCK"}
-                                  </Button>
-                                </CardContent>
-                              </Card>
-                            </motion.div>
-                          </Grid>
-                        ))}
-                      </Grid>
-                    </Box>
+                    <Alert severity="info" sx={{ mt: 4 }}>
+                      No compatible parts found for this vehicle. Please check
+                      back later or contact us for assistance.
+                    </Alert>
                   </motion.div>
                 )}
+            </motion.div>
+          </TabPanel>
+        </motion.div>
 
-                {selectedMake &&
-                  selectedModel &&
-                  selectedYear &&
-                  vehicleParts.length === 0 && (
-                    <motion.div variants={itemVariants}>
-                      <Alert severity="info" sx={{ mt: 4 }}>
-                        No compatible parts found for this vehicle. Please check
-                        back later or contact us for assistance.
-                      </Alert>
-                    </motion.div>
-                  )}
-              </motion.div>
-            </TabPanel>
+        {/* OBD Submission Form Modal */}
+        {showSubmissionForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0,0,0,0.5)",
+              zIndex: 1300,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 16,
+              overflow: "auto",
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setShowSubmissionForm(false);
+              }
+            }}
+          >
+            <Box
+              sx={{
+                maxWidth: 900,
+                width: "100%",
+                maxHeight: "90vh",
+                overflow: "auto",
+              }}
+            >
+              <OBDSubmissionForm
+                onSubmit={(submission) => {
+                  console.log("OBD submission:", submission);
+                  // Here you would typically send to your API
+                }}
+                onClose={() => setShowSubmissionForm(false)}
+              />
+            </Box>
           </motion.div>
-        </Container>
-      </Box>
+        )}
+      </PageContainer>
     </>
   );
 };
