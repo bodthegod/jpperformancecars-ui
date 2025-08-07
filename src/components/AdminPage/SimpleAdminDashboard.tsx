@@ -62,6 +62,7 @@ import {
   Info,
   Warning,
   CheckCircleOutline,
+  Image as ImageIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import {
@@ -76,7 +77,9 @@ import {
   GENERAL_PART_CATEGORIES,
   EXAMPLE_GENERAL_PARTS,
 } from "../../data/generalParts";
+import { generatePartSlug } from "../../utils/slugUtils";
 import SEO from "../SEO";
+import ImageUpload from "./ImageUpload";
 
 interface UserSubmission {
   id: string;
@@ -159,17 +162,21 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
   // Form states
   const [form, setForm] = useState({
     name: "",
+    slug: "",
     description: "",
     category: "Engine & Performance" as PartCategory,
     subcategory: "",
     brand: "",
     price: "",
+    quantity: "1",
     condition: "new",
     availability: "in_stock",
     part_number: "",
     compatible_vehicles: [] as string[],
     year_range: "",
     fitment_notes: "",
+    images: [] as string[],
+    primary_image_index: 0,
   });
 
   const [obdForm, setObdForm] = useState({
@@ -210,17 +217,21 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
   const resetForm = () => {
     setForm({
       name: "",
+      slug: "",
       description: "",
       category: "Engine & Performance",
       subcategory: "",
       brand: "",
       price: "",
+      quantity: "1",
       condition: "new",
       availability: "in_stock",
       part_number: "",
       compatible_vehicles: [],
       year_range: "",
       fitment_notes: "",
+      images: [],
+      primary_image_index: 0,
     });
   };
 
@@ -229,17 +240,21 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
       setEditingPart(part);
       setForm({
         name: part.name,
+        slug: part.slug || generatePartSlug(part.name, part.brand),
         description: part.description,
         category: part.category,
         subcategory: part.subcategory || "",
         brand: part.brand,
         price: part.price.toString(),
+        quantity: part.quantity?.toString() || "1",
         condition: part.condition || "new",
         availability: part.availability,
         part_number: part.part_number || "",
         compatible_vehicles: part.ferrari_models || [], // Use ferrari_models as compatible_vehicles for backward compatibility
         year_range: part.year_range || "",
         fitment_notes: part.fitment_notes || "",
+        images: (part as any).images || [],
+        primary_image_index: (part as any).primary_image_index || 0,
       });
     } else {
       setEditingPart(null);
@@ -253,14 +268,22 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
       setIsLoading(true);
       setError(null);
 
-      // Only use columns that definitely exist in basic schema
+      // Generate slug if not provided
+      const slug = form.slug || generatePartSlug(form.name, form.brand);
+
+      // Include all fields including images (database schema should be updated)
       const partData = {
         name: form.name,
+        slug: slug,
         description: form.description,
         category: form.category,
         brand: form.brand,
         price: parseFloat(form.price) || 0,
+        quantity: parseInt(form.quantity) || 0,
         availability: form.availability,
+        part_number: form.part_number,
+        images: form.images,
+        primary_image_index: form.primary_image_index,
       };
 
       if (editingPart) {
@@ -270,12 +293,22 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
           .eq("id", editingPart.id);
 
         if (error) throw error;
-        setSuccess("Part updated successfully!");
+
+        const imageNote =
+          form.images.length > 0
+            ? ` with ${form.images.length} image(s) saved to storage and database!`
+            : "";
+        setSuccess(`Part updated successfully${imageNote}`);
       } else {
         const { error } = await supabase.from("parts").insert([partData]);
 
         if (error) throw error;
-        setSuccess("Part added successfully!");
+
+        const imageNote =
+          form.images.length > 0
+            ? ` with ${form.images.length} image(s) saved to storage and database!`
+            : "";
+        setSuccess(`Part added successfully${imageNote}`);
       }
 
       setDialogOpen(false);
@@ -854,6 +887,15 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
                                 sx={{
                                   fontWeight: 600,
                                   backgroundColor: "#f8fafc",
+                                  width: 80,
+                                }}
+                              >
+                                Image
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  fontWeight: 600,
+                                  backgroundColor: "#f8fafc",
                                 }}
                               >
                                 Part Details
@@ -888,6 +930,14 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
                                   backgroundColor: "#f8fafc",
                                 }}
                               >
+                                Quantity
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  fontWeight: 600,
+                                  backgroundColor: "#f8fafc",
+                                }}
+                              >
                                 Status
                               </TableCell>
                               <TableCell
@@ -904,6 +954,42 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
                           <TableBody>
                             {parts.map((part) => (
                               <TableRow key={part.id} hover>
+                                <TableCell>
+                                  <Box
+                                    sx={{
+                                      width: 60,
+                                      height: 60,
+                                      borderRadius: 1,
+                                      overflow: "hidden",
+                                      backgroundColor: "#f5f5f5",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    {(part as any).images &&
+                                    (part as any).images.length > 0 ? (
+                                      <img
+                                        src={
+                                          (part as any).images[
+                                            (part as any).primary_image_index ||
+                                              0
+                                          ]
+                                        }
+                                        alt={part.name}
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          objectFit: "cover",
+                                        }}
+                                      />
+                                    ) : (
+                                      <ImageIcon
+                                        sx={{ color: "#ccc", fontSize: 24 }}
+                                      />
+                                    )}
+                                  </Box>
+                                </TableCell>
                                 <TableCell>
                                   <Box>
                                     <Typography
@@ -939,6 +1025,20 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
                                     sx={{ fontWeight: 600 }}
                                   >
                                     £{part.price.toLocaleString()}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      fontWeight: 600,
+                                      color:
+                                        part.quantity > 0
+                                          ? "#2e7d32"
+                                          : "#c62828",
+                                    }}
+                                  >
+                                    {part.quantity || 0}
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
@@ -1435,6 +1535,22 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
                 />
               </Grid>
 
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="URL Slug (SEO-friendly)"
+                  value={form.slug}
+                  onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                  placeholder="e.g. ferrari-458-exhaust-system"
+                  helperText="Auto-generated from part name, but can be customized for SEO"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                    },
+                  }}
+                />
+              </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
@@ -1491,6 +1607,24 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
               </Grid>
 
               <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Quantity in Stock"
+                  type="number"
+                  value={form.quantity}
+                  onChange={(e) =>
+                    setForm({ ...form, quantity: e.target.value })
+                  }
+                  inputProps={{ min: 0 }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                    },
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <InputLabel>Availability</InputLabel>
                   <Select
@@ -1505,7 +1639,7 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
                   >
                     <MenuItem value="in_stock">✅ In Stock</MenuItem>
                     <MenuItem value="out_of_stock">❌ Out of Stock</MenuItem>
-                    <MenuItem value="backorder">⏱️ Backorder</MenuItem>
+                    <MenuItem value="rare_find">💎 Rare Find</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -1526,6 +1660,18 @@ const SimpleAdminDashboard: React.FC<SimpleAdminDashboardProps> = ({
                       borderRadius: 2,
                     },
                   }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <ImageUpload
+                  images={form.images}
+                  onImagesChange={(images) => setForm({ ...form, images })}
+                  primaryImageIndex={form.primary_image_index}
+                  onPrimaryImageChange={(index) =>
+                    setForm({ ...form, primary_image_index: index })
+                  }
+                  maxImages={5}
                 />
               </Grid>
             </Grid>

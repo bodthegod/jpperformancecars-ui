@@ -55,14 +55,17 @@ export interface Solution {
 export interface Part {
   id: string;
   name: string;
+  slug: string; // SEO-friendly URL slug
   description: string;
   category: PartCategory;
   subcategory?: string;
   brand: string; // Ferrari, Novitec, Capristo, etc.
   price: number;
-  availability: "in_stock" | "out_of_stock" | "backorder" | "rare_find";
+  quantity: number; // Stock quantity
+  availability: "in_stock" | "out_of_stock" | "rare_find";
   condition?: "new" | "used_excellent" | "used_good" | "refurbished";
   images: string[];
+  primary_image_index?: number;
   specifications: Record<string, any>;
   part_number?: string;
   ferrari_part_number?: string; // Official Ferrari part number
@@ -149,7 +152,7 @@ export interface SearchFilters {
   brand?: string;
   price_min?: number;
   price_max?: number;
-  availability?: "in_stock" | "out_of_stock" | "backorder";
+  availability?: "in_stock" | "out_of_stock" | "rare_find";
   search?: string;
   vehicle_id?: string;
 }

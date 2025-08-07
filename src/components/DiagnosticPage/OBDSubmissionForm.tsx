@@ -235,6 +235,20 @@ const OBDSubmissionForm: React.FC<OBDSubmissionFormProps> = ({
           </Typography>
         </Alert>
 
+        <Alert severity="warning" sx={{ mb: 3 }}>
+          <Typography variant="body2">
+            <strong>⚠️ Important Disclaimer:</strong> The OBD diagnostic codes
+            and information provided on this website are for informational
+            purposes only. While we strive to provide accurate and up-to-date
+            information, diagnostic codes can vary between vehicle models,
+            years, and manufacturers. The information should not be considered
+            as professional automotive advice. Always consult with a qualified
+            mechanic or refer to your vehicle's service manual for accurate
+            diagnosis and repair procedures. JP Performance Cars is not
+            responsible for any decisions made based on this information.
+          </Typography>
+        </Alert>
+
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             {/* OBD Code Information */}

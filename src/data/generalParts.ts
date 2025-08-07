@@ -146,7 +146,7 @@ export const EXAMPLE_GENERAL_PARTS: Partial<Part>[] = [
     subcategory: "Carbon Fiber Aerodynamics",
     brand: "Seibon",
     price: 1299.99,
-    availability: "backorder",
+    availability: "rare_find",
     part_number: "FL17SUBIWRX-FS",
     fitment_notes: "Drilling required for installation. Hardware not included.",
   },

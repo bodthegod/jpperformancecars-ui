@@ -101,13 +101,12 @@ const navItems = [
   },
   {
     label: "SERVICES",
-    dropdownItems: [],
+    dropdownItems: [
+      { label: "Our Services", link: "/services" },
+      { label: "Parts Catalog", link: "/parts" },
+      { label: "OBD Diagnostics", link: "/diagnostic" },
+    ],
     link: "/services",
-  },
-  {
-    label: "DIAGNOSTIC",
-    dropdownItems: [],
-    link: "/diagnostic",
   },
   {
     label: "ABOUT",
@@ -164,12 +163,15 @@ const Navbar: React.FC = () => {
     setAnchorEl({ ...anchorEl, [label]: null });
   };
 
-  const handleDropdownNavigation = (dropdownItem: {
-    label: string;
-    link: string;
-  }) => {
+  const handleDropdownNavigation = (
+    dropdownItem: {
+      label: string;
+      link: string;
+    },
+    parentLabel: string
+  ) => {
     navigate(dropdownItem.link);
-    handleClose("ABOUT");
+    handleClose(parentLabel);
     setMobileMenuOpen(false);
   };
 
@@ -380,7 +382,10 @@ const Navbar: React.FC = () => {
                             if (typeof dropdownItem === "string") {
                               handleClose(item.label);
                             } else {
-                              handleDropdownNavigation(dropdownItem);
+                              handleDropdownNavigation(
+                                dropdownItem,
+                                item.label
+                              );
                             }
                           }}
                         >
@@ -544,7 +549,10 @@ const Navbar: React.FC = () => {
                             if (typeof dropdownItem === "string") {
                               handleClose(item.label);
                             } else {
-                              handleDropdownNavigation(dropdownItem);
+                              handleDropdownNavigation(
+                                dropdownItem,
+                                item.label
+                              );
                             }
                           }}
                         >

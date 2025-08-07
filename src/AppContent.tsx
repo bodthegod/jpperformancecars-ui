@@ -17,6 +17,8 @@ import DiagnosticLookup from "./components/DiagnosticPage/DiagnosticLookup";
 import OBDCodePage from "./components/DiagnosticPage/OBDCodePage";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 import ProtectedAdminRoute from "./components/AdminPage/ProtectedAdminRoute";
+import PartsPage from "./components/PartsPage/PartsPage";
+import PartDetailPage from "./components/PartsPage/PartDetailPage";
 import { CartProvider } from "./contexts/CartContext";
 
 export function AppContent() {
@@ -45,6 +47,8 @@ export function AppContent() {
         <Route path="/blog/:postId" element={<BlogPostPage />} />
         <Route path="/diagnostic" element={<DiagnosticLookup />} />
         <Route path="/diagnostic/:code" element={<OBDCodePage />} />
+        <Route path="/parts" element={<PartsPage />} />
+        <Route path="/parts/:slug" element={<PartDetailPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/admin" element={<ProtectedAdminRoute />} />
         <Route path="*" element={<NotFound />} />

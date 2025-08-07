@@ -59,6 +59,16 @@ export const partsApi = {
     return data;
   },
 
+  getBySlug: async (slug: string) => {
+    const { data, error } = await supabase
+      .from("parts")
+      .select("*")
+      .eq("slug", slug)
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
   search: async (filters: any) => {
     let query = supabase.from("parts").select("*");
 

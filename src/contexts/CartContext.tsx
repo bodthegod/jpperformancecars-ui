@@ -20,6 +20,8 @@ interface CartContextType {
   removeItem: (partId: string) => void;
   updateQuantity: (partId: string, quantity: number) => void;
   clearCart: () => void;
+  getCartQuantity: (partId: string) => number;
+  canAddToCart: (part: Part) => boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -30,6 +32,15 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       const existingItem = state.items.find(
         (item) => item.part.id === action.payload.id
       );
+
+      // Check if we can add more of this item
+      const currentCartQuantity = existingItem ? existingItem.quantity : 0;
+      const availableStock = action.payload.quantity || 0;
+
+      if (currentCartQuantity >= availableStock) {
+        // Can't add more - already at stock limit
+        return state;
+      }
 
       if (existingItem) {
         return {
@@ -161,12 +172,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "CLEAR_CART" });
   };
 
+  const getCartQuantity = (partId: string) => {
+    const item = state.items.find((item) => item.part.id === partId);
+    return item ? item.quantity : 0;
+  };
+
+  const canAddToCart = (part: Part) => {
+    const currentCartQuantity = getCartQuantity(part.id);
+    const availableStock = part.quantity || 0;
+    return currentCartQuantity < availableStock;
+  };
+
   const value: CartContextType = {
     state,
     addItem,
     removeItem,
     updateQuantity,
     clearCart,
+    getCartQuantity,
+    canAddToCart,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

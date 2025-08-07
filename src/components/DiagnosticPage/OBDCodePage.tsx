@@ -281,6 +281,38 @@ const OBDCodePage: React.FC = () => {
             </Box>
           </motion.div>
 
+          {/* OBD Disclaimer */}
+          <motion.div variants={itemVariants}>
+            <Box
+              sx={{
+                maxWidth: 800,
+                mx: "auto",
+                mb: 4,
+                p: 3,
+                backgroundColor: "#fff3cd",
+                border: "1px solid #ffeaa7",
+                borderRadius: 2,
+                borderLeft: "4px solid #f39c12",
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{ color: "#856404", fontWeight: "medium" }}
+              >
+                <strong>⚠️ Important Disclaimer:</strong> The OBD diagnostic
+                codes and information provided on this website are for
+                informational purposes only. While we strive to provide accurate
+                and up-to-date information, diagnostic codes can vary between
+                vehicle models, years, and manufacturers. The information should
+                not be considered as professional automotive advice. Always
+                consult with a qualified mechanic or refer to your vehicle's
+                service manual for accurate diagnosis and repair procedures. JP
+                Performance Cars is not responsible for any decisions made based
+                on this information.
+              </Typography>
+            </Box>
+          </motion.div>
+
           <Grid container spacing={4}>
             {/* Common Causes */}
             <Grid item xs={12} md={6}>
@@ -469,13 +501,13 @@ const OBDCodePage: React.FC = () => {
                                               </Typography>
                                             )}
                                             {part.availability ===
-                                              "backorder" && (
+                                              "rare_find" && (
                                               <Typography
                                                 variant="caption"
                                                 color="warning.main"
                                                 sx={{ textAlign: "center" }}
                                               >
-                                                ⏱ Backorder - 3-5 Days
+                                                💎 Rare Find - Limited Stock
                                               </Typography>
                                             )}
                                           </Box>
@@ -645,14 +677,14 @@ const OBDCodePage: React.FC = () => {
                                   label={
                                     part.availability === "in_stock"
                                       ? "IN STOCK"
-                                      : part.availability === "backorder"
-                                      ? "BACKORDER"
+                                      : part.availability === "rare_find"
+                                      ? "RARE FIND"
                                       : "OUT OF STOCK"
                                   }
                                   color={
                                     part.availability === "in_stock"
                                       ? "success"
-                                      : part.availability === "backorder"
+                                      : part.availability === "rare_find"
                                       ? "warning"
                                       : "error"
                                   }
@@ -681,7 +713,7 @@ const OBDCodePage: React.FC = () => {
                                 </Box>
                               )}
 
-                              {part.availability === "backorder" && (
+                              {part.availability === "rare_find" && (
                                 <Box
                                   sx={{
                                     backgroundColor: "#fff3e0",
@@ -695,7 +727,7 @@ const OBDCodePage: React.FC = () => {
                                     color="warning.dark"
                                     sx={{ fontWeight: "bold" }}
                                   >
-                                    ⏱ Expected: 3-5 Working Days
+                                    💎 Rare Find - Limited Availability
                                   </Typography>
                                 </Box>
                               )}
@@ -734,8 +766,8 @@ const OBDCodePage: React.FC = () => {
                                 >
                                   {part.availability === "in_stock"
                                     ? "ADD TO BASKET"
-                                    : part.availability === "backorder"
-                                    ? "ORDER (3-5 DAYS)"
+                                    : part.availability === "rare_find"
+                                    ? "ADD TO BASKET"
                                     : "OUT OF STOCK"}
                                 </Button>
 
